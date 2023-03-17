@@ -2,9 +2,16 @@ package sg.edu.ntu.m3project.m3project.entity;
 
 import java.text.DecimalFormat;
 
-import org.hibernate.annotations.Entity;
-import org.hibernate.annotations.Table;
-import org.springframework.data.annotation.Id;
+import java.sql.Timestamp;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 
 @Entity
 @Table(name="transport")
