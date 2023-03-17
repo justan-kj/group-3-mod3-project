@@ -20,10 +20,12 @@ public class TransportEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     Integer id;
-
+    
+    @Column(name="description")
     String description;
 
-    float price;
+    @Column(name="price")
+    Float price;
     final DecimalFormat df = new DecimalFormat("000000.00");
     // df.format(price)
 
