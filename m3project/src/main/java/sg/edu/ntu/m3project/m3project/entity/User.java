@@ -12,7 +12,7 @@ public class User {
         this.age = age;
         this.gender = gender;
     }
-
+     
     // getters and setters
 
     public String getEmail() {
@@ -46,4 +46,4 @@ public class User {
     public void setGender(int gender) {
         this.gender = gender;
     }
-}
+}    
