@@ -38,5 +38,5 @@ create table itineraries (
     primary key (id),
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (transport_id) REFERENCES transport(id),
-    FOREIGN KEY (accommodation_id) REFERENCES accomodation(id)
+    FOREIGN KEY (accommodation_id) REFERENCES accommodation(id)
 );
