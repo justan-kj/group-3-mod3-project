@@ -19,7 +19,7 @@ public class TransportEntity {
     
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    int id;
+    Integer id;
 
     String description;
 
@@ -35,11 +35,11 @@ public class TransportEntity {
     }
 
     // Getters and Setters
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
