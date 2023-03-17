@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import sg.edu.ntu.m3project.m3project.entity.Accommodation;
 
 @Repository
-public class AccommodationRepository extends CrudRepository<Accommodation, Integer>{
+public interface AccommodationRepository extends CrudRepository<Accommodation, Integer>{
     
 }

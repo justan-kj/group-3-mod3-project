@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import sg.edu.ntu.m3project.m3project.entity.Itinerary;
 
 @Repository
-public class ItineraryRepository extends CrudRepository<Itinerary, Integer>{
+public interface ItineraryRepository extends CrudRepository<Itinerary, Integer>{
     
 }
