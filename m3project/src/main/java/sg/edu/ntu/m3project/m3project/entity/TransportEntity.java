@@ -25,7 +25,7 @@ public class TransportEntity {
 
     float price;
     final DecimalFormat df = new DecimalFormat("000000.00");
-    df.format(price);
+    // df.format(price)
 
     @Column(name="created_at", updatable= false)
     Timestamp createdAt = new Timestamp(new Date().getTime());
