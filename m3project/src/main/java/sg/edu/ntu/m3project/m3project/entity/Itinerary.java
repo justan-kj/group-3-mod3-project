@@ -76,7 +76,7 @@ package sg.edu.ntu.m3project.m3project.entity;
      return destinationCity;
    }
 
-   public void setdestinationCity(String destinationCity) {
+   public void setDestinationCity(String destinationCity) {
      this.destinationCity = destinationCity;
    }
 
