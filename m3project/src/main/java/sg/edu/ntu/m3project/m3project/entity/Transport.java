@@ -21,6 +21,9 @@ public class Transport {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     Integer id;
     
+    @Column(name="name")
+    String name;
+
     @Column(name="description")
     String description;
 
@@ -42,6 +45,14 @@ public class Transport {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
     public String getDescription() {
         return description;
     }
