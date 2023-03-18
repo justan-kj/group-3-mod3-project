@@ -18,9 +18,6 @@ public class Accommodation {
   @GeneratedValue(strategy=GenerationType.IDENTITY)
   Integer id;
 
-  @Column(name="name")
-  String name;
-
   @Column(name="description")
   String description;
 
@@ -60,14 +57,6 @@ public class Accommodation {
 
   public void setCreatedAt(Timestamp createdAt) {
     this.createdAt = createdAt;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
   }
 
 }
