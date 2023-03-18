@@ -8,12 +8,12 @@
 
   - [Changelog](#changelog)
   - [1. Login](#1-login)
-  - [2. Get itineraries](#2-get-itineraries-2-get-itineraries)
+  - [2. Get itineraries](#2-get-itineraries)
   - [3. Delete itinerary](#3-delete-itinerary)
   - [4. Get user itinerary](#4-get-user-itinerary)
-  - [5. Add destination {#5-add-destination}](#5-add-destination-5-add-destination)
+  - [5. Add destination](#5-add-destination)
   - [6. Delete destination](#6-delete-destination)
-  - [7. Update destination {#7-update-destination}](#7-update-destination-7-update-destination)
+  - [7. Update destination](#7-update-destination)
   - [Glossary](#glossary)
 
 ## Changelog
@@ -384,9 +384,6 @@ The ` auth_key ` that was given in response to `/api/login`
 
 
 
-## 
-
-
 ## 4. Get user itinerary
 
 Gets the itinerary for the specified userId.
@@ -433,10 +430,7 @@ Gets the itinerary for the specified userId.
 
 
 
-```
-auth_key
-```
-
+**auth_key**
 
 The ` auth_key ` that was given in response to `/api/login`
 
@@ -497,7 +491,7 @@ The ` auth_key ` that was given in response to `/api/login`
 
 
 
-## 5. Add destination {#5-add-destination}
+## 5. Add destination
 
 Add an item to the itinerary for the specified userId.
 
@@ -730,12 +724,12 @@ The destination city to be deleted.
 
 
 
-## 7. Update destination {#7-update-destination}
+## 7. Update destination
 
 Update itinerary records with the `itineraryId ` for the specified userId.
 
 
-## Request {#request}
+### Request {#request}
 
 
 <table>
