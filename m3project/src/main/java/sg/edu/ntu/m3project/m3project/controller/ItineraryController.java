@@ -42,7 +42,7 @@ public class ItineraryController {
         if (userItinerary.isPresent()) {
             return ResponseEntity.ok().body(userItinerary.get());
         }else{
-            return ResponseEntity.ok().build();
+            return ResponseEntity.notFound().build();
         }
     }
     
@@ -56,7 +56,7 @@ public class ItineraryController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping
+    @DeleteMapping(value="/{userId}")
     public ResponseEntity deleteUserItinerary(){
         return ResponseEntity.ok().build();
     }
