@@ -31,10 +31,10 @@ package sg.edu.ntu.m3project.m3project.entity;
    @JoinColumn(name="accommodation_id")
    Accommodation accommodation_id;
 
-   String destination_city;
-   String destination_country;
-   Date destination_start_date;
-   Date destination_end_date;
+   String destinationCity;
+   String destinationCountry;
+   Date destinationStartDate;
+   Date destinationEndDate;
    Float budget;
 
    @Column(name="created_at", updatable= false)
@@ -72,36 +72,36 @@ package sg.edu.ntu.m3project.m3project.entity;
      this.accommodation_id = accommodation_id;
    }
 
-   public String getDestination_city() {
-     return destination_city;
+   public String getDestinationCity() {
+     return destinationCity;
    }
 
-   public void setDestination_city(String destination_city) {
-     this.destination_city = destination_city;
+   public void setDestinationCity(String destinationCity) {
+     this.destinationCity = destinationCity;
    }
 
-   public String getDestination_country() {
-     return destination_country;
+   public String getDestinationCountry() {
+     return destinationCountry;
    }
 
-   public void setDestination_country(String destination_country) {
-     this.destination_country = destination_country;
+   public void setDestinationCountry(String destinationCountry) {
+     this.destinationCountry = destinationCountry;
    }
 
-   public Date getDestination_start_date() {
-     return destination_start_date;
+   public Date getDestinationStartDate() {
+     return destinationStartDate;
    }
 
-   public void setDestination_start_date(Date destination_start_date) {
-     this.destination_start_date = destination_start_date;
+   public void setDestinationStartDate(Date destinationStartDate) {
+     this.destinationStartDate = destinationStartDate;
    }
 
-   public Date getDestination_end_date() {
-     return destination_end_date;
+   public Date getDestinationEndDate() {
+     return destinationEndDate;
    }
 
-   public void setDestination_end_date(Date destination_end_date) {
-     this.destination_end_date = destination_end_date;
+   public void setDestinationEndDate(Date destinationEndDate) {
+     this.destinationEndDate = destinationEndDate;
    }
 
    public Float getBudget() {
