@@ -1,5 +1,10 @@
 package sg.edu.ntu.m3project.m3project.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="users")
 public class User {
     private String email;
     private String password;

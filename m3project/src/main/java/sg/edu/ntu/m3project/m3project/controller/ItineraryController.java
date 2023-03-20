@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import sg.edu.ntu.m3project.m3project.entity.Itinerary;
@@ -17,6 +18,7 @@ import sg.edu.ntu.m3project.m3project.repo.UserRepository;
 
 import org.springframework.http.ResponseEntity;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,6 +65,36 @@ public class ItineraryController {
 
     @DeleteMapping
     public ResponseEntity deleteDestination(){
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping(value="/{userId}/{destName}/accommodation")
+    public ResponseEntity addAccommodation(){
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping(value="/{userId}/{destName}/transport")
+    public ResponseEntity addTransport(){
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping(value="/{userId}/{destName}/accommodation")
+    public ResponseEntity deleteAccommodation(){
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping(value="/{userId}/{destName}/transport")
+    public ResponseEntity deleteTransport(){
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping(value="/{userId}/budget")
+    public ResponseEntity setBudget(@RequestParam float budget){
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping(value="/{userId}/{destName}/duration")
+    public ResponseEntity setDuration(@RequestParam Date startDate,@RequestParam Date endDate){
         return ResponseEntity.ok().build();
     }
 
