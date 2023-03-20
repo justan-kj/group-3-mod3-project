@@ -1,45 +1,54 @@
 package sg.edu.ntu.m3project.m3project.entity;
 
- import java.sql.Timestamp;
- import java.util.Date;
- import javax.persistence.Column;
- import javax.persistence.Entity;
- import javax.persistence.GeneratedValue;
- import javax.persistence.GenerationType;
- import javax.persistence.Id;
- import javax.persistence.JoinColumn;
- import javax.persistence.OneToOne;
- import javax.persistence.Table;
+import java.sql.Timestamp;
+import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
- @Entity
- @Table(name="itineraries")
- public class Itinerary {
+@Entity
+@Table(name="itineraries")
+public class Itinerary {
 
    @Id
    @GeneratedValue(strategy=GenerationType.IDENTITY)
-   Integer id;
+   private Integer id;
 
-   @OneToOne
+   @ManyToOne
    @JoinColumn(name="user_id")
-   User user;
+   private User user;
 
-   @OneToOne
+   @ManyToOne
    @JoinColumn(name="transport_id")
-   Transport transport_id;
+   private Transport transportId;
 
-   @OneToOne
+   @ManyToOne
    @JoinColumn(name="accommodation_id")
-   Accommodation accommodation_id;
+   private Accommodation accommodationId;
 
-   String destinationCity;
-   String destinationCountry;
-   Date destinationStartDate;
-   Date destinationEndDate;
-   Float budget;
+   @ManyToOne
+   @JoinColumn(name="destination_id")
+   private Destination destinationId;
+
+   @Column(name="start_date")
+   private Date startDate;
+
+   @Column(name="end_date")
+   private Date endDate;
+
+   @Column(name="budget")
+   private Float budget;
 
    @Column(name="created_at", updatable= false)
-   Timestamp createdAt = new Timestamp(new Date().getTime());
+   private Timestamp createdAt = new Timestamp(new Date().getTime());
 
+
+   //#region Getters and Setters
    public Integer getId() {
      return id;
    }
@@ -56,52 +65,44 @@ package sg.edu.ntu.m3project.m3project.entity;
      this.user = user;
    }
 
-   public Transport getTransport_id() {
-     return transport_id;
+   public Transport getTransportId() {
+     return transportId;
    }
 
-   public void setTransport_id(Transport transport_id) {
-     this.transport_id = transport_id;
+   public void setTransportId(Transport transportId) {
+     this.transportId = transportId;
    }
 
-   public Accommodation getAccommodation_id() {
-     return accommodation_id;
+   public Accommodation getAccommodationId() {
+     return accommodationId;
    }
 
-   public void setAccommodation_id(Accommodation accommodation_id) {
-     this.accommodation_id = accommodation_id;
+   public void setAccommodationId(Accommodation accommodationId) {
+     this.accommodationId = accommodationId;
    }
 
-   public String getDestinationCity() {
-     return destinationCity;
+   public Destination getDestinationId() {
+     return destinationId;
    }
 
-   public void setDestinationCity(String destinationCity) {
-     this.destinationCity = destinationCity;
+   public void setDestinationId(Destination destinationId) {
+     this.destinationId = destinationId;
    }
 
-   public String getDestinationCountry() {
-     return destinationCountry;
+   public Date getStartDate() {
+     return startDate;
    }
 
-   public void setDestinationCountry(String destinationCountry) {
-     this.destinationCountry = destinationCountry;
+   public void setStartDate(Date startDate) {
+     this.startDate = startDate;
    }
 
-   public Date getDestinationStartDate() {
-     return destinationStartDate;
+   public Date getEndDate() {
+     return endDate;
    }
 
-   public void setDestinationStartDate(Date destinationStartDate) {
-     this.destinationStartDate = destinationStartDate;
-   }
-
-   public Date getDestinationEndDate() {
-     return destinationEndDate;
-   }
-
-   public void setDestinationEndDate(Date destinationEndDate) {
-     this.destinationEndDate = destinationEndDate;
+   public void setEndDate(Date endDate) {
+     this.endDate = endDate;
    }
 
    public Float getBudget() {
@@ -119,5 +120,5 @@ package sg.edu.ntu.m3project.m3project.entity;
    public void setCreatedAt(Timestamp createdAt) {
      this.createdAt = createdAt;
    }
-
- }
+   //#endregion
+}
