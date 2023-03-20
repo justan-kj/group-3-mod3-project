@@ -26,7 +26,7 @@ public class Transport {
 
     @Column(name="price")
     Float price;
-    final DecimalFormat df = new DecimalFormat("0.00");
+    // final DecimalFormat df = new DecimalFormat("0.00");
     // df.format(price)
 
     @Column(name="created_at", updatable= false)

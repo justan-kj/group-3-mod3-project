@@ -1,19 +1,43 @@
 package sg.edu.ntu.m3project.m3project.entity;
 
-public class User {
-    private String email;
-    private String password;
-    private int age;
-    private int gender;
+import java.sql.Timestamp;
+import java.util.Date;
 
-    public User(String email, String password, int age, int gender) {
-        this.email = email;
-        this.password = password;
-        this.age = age;
-        this.gender = gender;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="users")
+public class User {
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    Integer id;
+
+    @Column(nullable=false)
+    String email;
+
+    @Column(nullable=false)
+    String password;
+
+    int age;
+
+    int gender;
+
+    @Column(name="created_at", updatable= false)
+    Timestamp createdAt = new Timestamp(new Date().getTime());
+
+    public Integer getId() {
+        return id;
     }
-     
-    // getters and setters
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getEmail() {
         return email;
@@ -46,4 +70,12 @@ public class User {
     public void setGender(int gender) {
         this.gender = gender;
     }
-}    
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+}   
