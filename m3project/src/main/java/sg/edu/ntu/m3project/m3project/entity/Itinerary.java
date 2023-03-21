@@ -23,18 +23,6 @@ public class Itinerary {
    @JoinColumn(name="user_id")
    private User user;
 
-   @ManyToOne
-   @JoinColumn(name="transport_id")
-   private Transport transport;
-
-   @ManyToOne
-   @JoinColumn(name="accommodation_id")
-   private Accommodation accommodation;
-
-   @ManyToOne
-   @JoinColumn(name="destination_id")
-   private Destination destination;
-
    @Column(name="start_date")
    private Date startDate;
 
@@ -64,31 +52,7 @@ public class Itinerary {
    public void setUser(User user) {
      this.user = user;
    }
-
-   public Transport getTransport() {
-     return transport;
-   }
-
-   public void setTransport(Transport transportId) {
-     this.transport = transportId;
-   }
-
-   public Accommodation getAccommodation() {
-     return accommodation;
-   }
-
-   public void setAccommodation(Accommodation accommodationId) {
-     this.accommodation = accommodationId;
-   }
-
-   public Destination getDestination() {
-     return destination;
-   }
-
-   public void setDestination(Destination destinationId) {
-     this.destination = destinationId;
-   }
-
+   
    public Date getStartDate() {
      return startDate;
    }
