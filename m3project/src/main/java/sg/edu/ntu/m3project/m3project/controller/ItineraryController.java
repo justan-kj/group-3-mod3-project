@@ -11,9 +11,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import sg.edu.ntu.m3project.m3project.entity.Destination;
 import sg.edu.ntu.m3project.m3project.entity.Itinerary;
+
 import sg.edu.ntu.m3project.m3project.entity.Transport;
+
+import sg.edu.ntu.m3project.m3project.entity.User;
+import sg.edu.ntu.m3project.m3project.repo.DestinationRepository;
+
 import sg.edu.ntu.m3project.m3project.repo.ItineraryRepository;
 import sg.edu.ntu.m3project.m3project.repo.TransportRepository;
 import sg.edu.ntu.m3project.m3project.repo.UserRepository;
@@ -21,10 +28,10 @@ import sg.edu.ntu.m3project.m3project.repo.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.net.URI;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
-
 
 @RestController
 @RequestMapping("/itineraries")
@@ -33,45 +40,64 @@ public class ItineraryController {
     ItineraryRepository itineraryRepo;
 
     @Autowired
+    DestinationRepository destinationRepo;
+
+    @Autowired
     UserRepository userRepo;
 
     @Autowired
     TransportRepository transportRepo;
 
     @GetMapping
-    public ResponseEntity<List<Itinerary>> getAllItineraries(){
-        List<Itinerary> itineraryRecords =  (List<Itinerary>)itineraryRepo.findAll();
+    public ResponseEntity<List<Itinerary>> getAllItineraries() {
+        List<Itinerary> itineraryRecords = (List<Itinerary>) itineraryRepo.findAll();
         return ResponseEntity.ok().body(itineraryRecords);
     }
 
-    @GetMapping(value="/{userId}")
-    public ResponseEntity<Itinerary> getUserItinerary(@PathVariable int userId){
-        Optional<Itinerary> userItinerary = itineraryRepo.findByUserId(userId);
-        if (userItinerary.isPresent()) {
-            return ResponseEntity.ok().body(userItinerary.get());
-        }else{
+    @GetMapping(value = "/{userId}")
+    public ResponseEntity<List<Itinerary>> getUserItinerary(@PathVariable int userId) {
+        List<Itinerary> userItinerary = (List<Itinerary>) itineraryRepo.findAllByUserId(userId);
+        if (userItinerary.size()>0) {
+            return ResponseEntity.ok().body(userItinerary);
+        } else {
             return ResponseEntity.notFound().build();
         }
     }
-    
-    @PostMapping(value="/{userId}")
-    public ResponseEntity addDestination(@PathVariable int userId){
+
+    @PostMapping(value = "/{userId}")
+    public ResponseEntity addDestination(@PathVariable int userId, @RequestBody Itinerary itinerary ) {
+
+        Optional<User> user = userRepo.findById(userId);
+        Optional<Destination> destination = destinationRepo.findById(itinerary.getDestination().getId());
+
+        if (!(user.isPresent() && destination.isPresent())){
+            return ResponseEntity.badRequest().build();
+        }
+
+        itinerary.setUser(user.get());
+        itinerary.setDestination(destination.get());
+        itineraryRepo.save(itinerary);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(itinerary.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).build();
+    }
+
+    @PutMapping(value = "/{userId}")
+    public ResponseEntity updateDestination(@PathVariable int userId) {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping(value="/{userId}")
-    public ResponseEntity updateDestination(@PathVariable int userId){
-        return ResponseEntity.ok().build();
-    }
-
-
-    @DeleteMapping(value="/{userId}")
-    public ResponseEntity deleteUserItinerary(){
+    @DeleteMapping(value = "/{userId}")
+    public ResponseEntity deleteUserItinerary() {
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping
-    public ResponseEntity deleteDestination(){
+    public ResponseEntity deleteDestination() {
         return ResponseEntity.ok().build();
     }
 
@@ -134,15 +160,15 @@ public class ItineraryController {
             }
          }
          return ResponseEntity.notFound().build();
-    }
 
-    @PutMapping(value="/{userId}/budget")
-    public ResponseEntity setBudget(@RequestParam float budget){
+    @PutMapping(value = "/{userId}/budget")
+    public ResponseEntity setBudget(@RequestParam float budget) {
         return ResponseEntity.ok().build();
     }
 
     @PutMapping(value="/{userId}/{itineraryId}/duration")
     public ResponseEntity setDuration(@RequestParam Date startDate,@RequestParam Date endDate){
+
         return ResponseEntity.ok().build();
     }
 

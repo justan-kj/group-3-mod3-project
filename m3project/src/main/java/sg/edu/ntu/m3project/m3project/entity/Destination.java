@@ -1,7 +1,5 @@
 package sg.edu.ntu.m3project.m3project.entity;
 
-import java.text.DecimalFormat;
-
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -12,66 +10,66 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "transport")
-public class Transport {
 
+@Entity
+@Table(name="destinations")
+public class Destination {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @Column(name = "name")
-    String name;
+    @Column(name = "city")
+    String city;
+
+    @Column(name = "country")
+    String country;
 
     @Column(name = "description")
     String description;
 
-    @Column(name = "price")
-    Float price;
-    // final DecimalFormat df = new DecimalFormat("0.00");
-    // df.format(price)
-
     @Column(name = "created_at", updatable = false)
     Timestamp createdAt = new Timestamp(new Date().getTime());
 
-    // Getters and Setters
+    //#region Getters and Setters
     public Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(final Integer id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getCity() {
+        return city;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCity(final String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(final String country) {
+        this.country = country;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
-    }
-
-    public float getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
     }
 
     public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(final Timestamp createdAt) {
         this.createdAt = createdAt;
     }
+
+    //endregion
 }
