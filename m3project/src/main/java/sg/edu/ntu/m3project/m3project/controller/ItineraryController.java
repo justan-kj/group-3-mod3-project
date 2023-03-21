@@ -82,8 +82,19 @@ public class ItineraryController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping(value = "/{userId}")
-    public ResponseEntity deleteUserItinerary() {
+    @PostMapping(value = "/deleteAllDestinations/{userId}")
+    public ResponseEntity deleteAllDestinations(@PathVariable int userId) {
+        List<Itinerary> userItineraryList = (List<Itinerary>) itineraryRepo.findAllByUserId(userId);
+        if (userItineraryList.size() == 0) {
+            return ResponseEntity.notFound().build();
+        }
+        for (Itinerary itinerary : userItineraryList) {
+            if(itinerary.getDestination() == null) {
+                return ResponseEntity.notFound().build();
+            }
+            itinerary.setDestination(null);
+            itineraryRepo.save(itinerary);
+        }
         return ResponseEntity.ok().build();
     }
 

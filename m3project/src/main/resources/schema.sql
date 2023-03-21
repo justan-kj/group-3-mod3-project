@@ -40,7 +40,7 @@ create table itineraries (
     user_id int NOT NULL,
     transport_id int,
     accommodation_id int,
-    destination_id INT NOT NULL,
+    destination_id INT,
     start_date Date NOT NULL,
     end_date Date NOT NULL,
     budget Decimal(8,2),
