@@ -11,20 +11,23 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="accommodation")
+@Table(name = "accommodation")
 public class Accommodation {
-  
+
   @Id
-  @GeneratedValue(strategy=GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   Integer id;
 
-  @Column(name="description")
+  @Column(name = "name")
+  String name;
+
+  @Column(name = "description")
   String description;
 
-  @Column(name="price")
+  @Column(name = "price")
   Float price;
 
-  @Column(name="created_at", updatable= false)
+  @Column(name = "created_at", updatable = false)
   Timestamp createdAt = new Timestamp(new Date().getTime());
 
   public Integer getId() {
@@ -33,6 +36,14 @@ public class Accommodation {
 
   public void setId(Integer id) {
     this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 
   public String getDescription() {

@@ -1,5 +1,7 @@
 package sg.edu.ntu.m3project.m3project.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 import java.util.Date;
 
