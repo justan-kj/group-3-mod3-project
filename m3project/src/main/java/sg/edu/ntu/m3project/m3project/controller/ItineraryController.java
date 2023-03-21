@@ -170,7 +170,7 @@ public class ItineraryController {
          }
          return ResponseEntity.notFound().build();
     }
- 
+
     @PutMapping(value = "/{userId}/budget")
     public ResponseEntity setBudget(@RequestParam float budget) {
         return ResponseEntity.ok().build();
