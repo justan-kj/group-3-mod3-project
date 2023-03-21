@@ -110,9 +110,25 @@ public class ItineraryController {
         return ResponseEntity.created(location).build();
     }
 
-    @PutMapping(value = "/{userId}")
-    public ResponseEntity updateDestination(@PathVariable int userId) {
-        return ResponseEntity.ok().build();
+    @PutMapping(value = "/{itineraryItemId}/destination")
+    public ResponseEntity setDestination(@PathVariable int itineraryItemId, @RequestParam int destinationId) {
+
+        ItineraryItem itineraryItem = itineraryItemRepo.findById(itineraryItemId).orElse(null);
+        Destination destination = destinationRepo.findById(destinationId).orElse(null);
+
+        if (itineraryItem == null || destination == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        itineraryItem.setDestination(destination);
+        itineraryItemRepo.save(itineraryItem);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(itineraryItem.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 
     @PostMapping(value = "/deleteAllDestinations/{userId}")
@@ -206,7 +222,7 @@ public class ItineraryController {
          }
          return ResponseEntity.notFound().build();
     }
-    
+
     @PutMapping(value = "/{userId}/budget")
     public ResponseEntity setBudget(@RequestParam float budget) {
         return ResponseEntity.ok().build();
