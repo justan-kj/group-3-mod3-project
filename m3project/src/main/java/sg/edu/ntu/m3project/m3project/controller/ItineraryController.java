@@ -57,7 +57,7 @@ public class ItineraryController {
         return ResponseEntity.ok().body(itineraryRecords);
     }
 
-    @GetMapping(value = "/{userId}")
+    @GetMapping(value = "/users/{userId}")
     public ResponseEntity<List<Itinerary>> getUserItinerary(@PathVariable int userId) {
         List<Itinerary> userItinerary = (List<Itinerary>) itineraryRepo.findAllByUserId(userId);
         if (userItinerary.size() > 0) {
@@ -71,9 +71,8 @@ public class ItineraryController {
     public ResponseEntity addItineraryItem(@PathVariable int itineraryId, @RequestBody ItineraryItem itineraryItem) {
 
         Optional<Itinerary> itinerary = itineraryRepo.findById(itineraryId);
-        Optional<Destination> destination = destinationRepo.findById(itineraryItem.getDestination().getId());
 
-        if (!(itinerary.isPresent() && destination.isPresent())) {
+        if (!itinerary.isPresent()) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -88,7 +87,7 @@ public class ItineraryController {
         return ResponseEntity.created(location).build();
     }
 
-    @PutMapping(value = "/{itineraryItemId}/destination")
+    @PutMapping(value = "/items/{itineraryItemId}/destination")
     public ResponseEntity setDestination(@PathVariable int itineraryItemId, @RequestParam int destinationId) {
 
         ItineraryItem itineraryItem = itineraryItemRepo.findById(itineraryItemId).orElse(null);
@@ -109,16 +108,13 @@ public class ItineraryController {
         return ResponseEntity.created(location).build();
     }
 
-
-
-    @PutMapping(value = "/{userId}/{itineraryId}/accommodation")
+    @PutMapping(value = "/items/{itineraryItemId}/accommodation")
     public ResponseEntity addAccommodation() {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping(value = "/{userId}/{itineraryId}")
-    public ResponseEntity<Transport> create(@RequestBody Transport transport, @PathVariable Integer userId,
-            @PathVariable Integer itineraryId) {
+    @PostMapping(value = "/transport")
+    public ResponseEntity<Transport> create(@RequestBody Transport transport) {
 
         try {
             Transport created = transportRepo.save(transport); // when "id" is not present, .save() will perform create
@@ -133,7 +129,7 @@ public class ItineraryController {
         }
     }
 
-    @PutMapping(value = "/{userId}/{itineraryId}/{transportId}")
+    @PutMapping(value = "items/{itineraryId}/{transportId}")
     public ResponseEntity<Transport> addTransport(@RequestBody Transport transport, @PathVariable Integer userId,
             @PathVariable Integer itineraryId, @PathVariable Integer transportId) {
         Optional<Transport> currentTransport = transportRepo.findById(transportId);
@@ -174,7 +170,7 @@ public class ItineraryController {
          }
          return ResponseEntity.notFound().build();
     }
-
+ 
     @PutMapping(value = "/{userId}/budget")
     public ResponseEntity setBudget(@RequestParam float budget) {
         return ResponseEntity.ok().build();
