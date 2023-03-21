@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import sg.edu.ntu.m3project.m3project.entity.Itinerary;
+import sg.edu.ntu.m3project.m3project.entity.Transport;
 import sg.edu.ntu.m3project.m3project.repo.ItineraryRepository;
+import sg.edu.ntu.m3project.m3project.repo.TransportRepository;
 import sg.edu.ntu.m3project.m3project.repo.UserRepository;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.sql.Date;
@@ -31,6 +34,9 @@ public class ItineraryController {
 
     @Autowired
     UserRepository userRepo;
+
+    @Autowired
+    TransportRepository transportRepo;
 
     @GetMapping
     public ResponseEntity<List<Itinerary>> getAllItineraries(){
@@ -69,24 +75,65 @@ public class ItineraryController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping(value="/{userId}/{destName}/accommodation")
+    @PutMapping(value="/{userId}/{itineraryId}/accommodation")
     public ResponseEntity addAccommodation(){
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping(value="/{userId}/{destName}/transport")
-    public ResponseEntity addTransport(){
-        return ResponseEntity.ok().build();
+    @PostMapping(value="/{userId}/{itineraryId}")
+    public ResponseEntity<Transport> create(@RequestBody Transport transport, @PathVariable Integer userId, @PathVariable Integer itineraryId){
+        
+        try{
+            Transport created = transportRepo.save(transport); // when "id" is not present, .save() will perform create operation.
+            return new ResponseEntity(transportRepo.findById(created.getId()), HttpStatus.CREATED);
+        }catch(IllegalArgumentException iae){
+            iae.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }catch(Exception e){
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
-    @DeleteMapping(value="/{userId}/{destName}/accommodation")
+    @PutMapping(value="/{userId}/{itineraryId}/{transportId}")
+    public ResponseEntity<Transport> addTransport(@RequestBody Transport transport, @PathVariable Integer userId, @PathVariable Integer itineraryId, @PathVariable Integer transportId){
+        Optional<Transport> currentTransport = transportRepo.findById(transportId);
+        if(currentTransport.isPresent()){ // Check if the expected object is present
+            try{
+                Transport t = currentTransport.get(); // Get the object - Transport
+
+                // Update the fetched product with description, price sent via Request Body
+                t.setDescription(transport.getDescription());
+                t.setPrice(transport.getPrice());
+
+                transportRepo.save(t); // When "id" is present, .save() will perform update operation.
+                return ResponseEntity.ok().body(t);
+            }catch(Exception e){
+                e.printStackTrace();
+                return ResponseEntity.badRequest().build();
+            }            
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping(value="/{userId}/{itineraryId}/accommodation")
     public ResponseEntity deleteAccommodation(){
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping(value="/{userId}/{destName}/transport")
-    public ResponseEntity deleteTransport(){
-        return ResponseEntity.ok().build();
+    @DeleteMapping(value="/{userId}/{itineraryId}/{transportId}")
+    public ResponseEntity deleteTransport(@PathVariable int userId, @PathVariable int itineraryId, @PathVariable int transportId){
+        boolean exist = transportRepo.existsById(transportId);
+         if(exist){
+            try{
+                transportRepo.deleteById(transportId);
+                return ResponseEntity.ok().build();
+            }catch(Exception e){
+                e.printStackTrace();
+                return ResponseEntity.badRequest().build();
+            }
+         }
+         return ResponseEntity.notFound().build();
     }
 
     @PutMapping(value="/{userId}/budget")
@@ -94,10 +141,9 @@ public class ItineraryController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping(value="/{userId}/{destName}/duration")
+    @PutMapping(value="/{userId}/{itineraryId}/duration")
     public ResponseEntity setDuration(@RequestParam Date startDate,@RequestParam Date endDate){
         return ResponseEntity.ok().build();
     }
 
 }
-
