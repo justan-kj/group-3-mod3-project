@@ -88,28 +88,6 @@ public class ItineraryController {
         return ResponseEntity.created(location).build();
     }
 
-    @PostMapping(value = "/{userId}")
-    public ResponseEntity addDestination(@PathVariable int userId, @RequestBody Itinerary itinerary) {
-
-        Optional<User> user = userRepo.findById(userId);
-        Optional<Destination> destination = destinationRepo.findById(itinerary.getDestination().getId());
-
-        if (!(user.isPresent() && destination.isPresent())) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        itinerary.setUser(user.get());
-        itinerary.setDestination(destination.get());
-        itineraryRepo.save(itinerary);
-
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(itinerary.getId())
-                .toUri();
-
-        return ResponseEntity.created(location).build();
-    }
-
     @PutMapping(value = "/{itineraryItemId}/destination")
     public ResponseEntity setDestination(@PathVariable int itineraryItemId, @RequestParam int destinationId) {
 
