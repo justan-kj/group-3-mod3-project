@@ -37,6 +37,8 @@ create table accommodation (
 
 create table itineraries (
     id int AUTO_INCREMENT NOT NULL,
+    name varchar(255),
+    description varchar(255),
     user_id int NOT NULL,
     start_date Date NOT NULL,
     end_date Date NOT NULL,
@@ -48,12 +50,15 @@ create table itineraries (
 
 create table itinerary_items (
     id int AUTO_INCREMENT NOT NULL,
+    name varchar(255),
+    description varchar(255),
     itinerary_id int NOT NULL,
     transport_id int,
     accommodation_id int,
     destination_id INT,
     start_date Date,
     end_date Date,
+    notes TEXT,
     created_at timestamp default current_timestamp,
     primary key (id),
     FOREIGN KEY (itinerary_id) REFERENCES itineraries(id),

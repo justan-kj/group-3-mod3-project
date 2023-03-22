@@ -41,7 +41,10 @@ public class ItineraryItem {
    @Column(name="end_date")
    private Date endDate;
 
-   @Column(name="created_at", updatable= false)
+   @Column(name="notes")
+   private String notes;
+
+  @Column(name="created_at", updatable= false)
    private Timestamp createdAt = new Timestamp(new Date().getTime());
 
 
@@ -110,5 +113,14 @@ public class ItineraryItem {
    public void setCreatedAt(Timestamp createdAt) {
      this.createdAt = createdAt;
    }
+
+   public String getNotes() {
+    return notes;
+  }
+
+  public void setNotes(String notes) {
+    this.notes = notes;
+  }
+
    //#endregion
 }

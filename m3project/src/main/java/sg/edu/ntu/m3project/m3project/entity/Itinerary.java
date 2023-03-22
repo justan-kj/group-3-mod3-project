@@ -12,77 +12,99 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="itineraries")
+@Table(name = "itineraries")
 public class Itinerary {
 
-   @Id
-   @GeneratedValue(strategy=GenerationType.IDENTITY)
-   private Integer id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer id;
 
-   @ManyToOne
-   @JoinColumn(name="user_id")
-   private User user;
+  @Column(name = "name")
+  private String name;
 
-   @Column(name="start_date")
-   private Date startDate;
+  @Column(name = "description")
+  private String description;
 
-   @Column(name="end_date")
-   private Date endDate;
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private User user;
 
-   @Column(name="budget")
-   private Float budget;
+  @Column(name = "start_date")
+  private Date startDate;
 
-   @Column(name="created_at", updatable= false)
-   private Timestamp createdAt = new Timestamp(new Date().getTime());
+  @Column(name = "end_date")
+  private Date endDate;
 
+  @Column(name = "budget")
+  private Float budget;
 
-   //#region Getters and Setters
-   public Integer getId() {
-     return id;
-   }
+  @Column(name = "created_at", updatable = false)
+  private Timestamp createdAt = new Timestamp(new Date().getTime());
 
-   public void setId(Integer id) {
-     this.id = id;
-   }
+  // #region Getters and Setters
+  public Integer getId() {
+    return id;
+  }
 
-   public User getUser() {
-     return user;
-   }
+  public void setId(Integer id) {
+    this.id = id;
+  }
 
-   public void setUser(User user) {
-     this.user = user;
-   }
-   
-   public Date getStartDate() {
-     return startDate;
-   }
+  public User getUser() {
+    return user;
+  }
 
-   public void setStartDate(Date startDate) {
-     this.startDate = startDate;
-   }
+  public void setUser(User user) {
+    this.user = user;
+  }
 
-   public Date getEndDate() {
-     return endDate;
-   }
+  public Date getStartDate() {
+    return startDate;
+  }
 
-   public void setEndDate(Date endDate) {
-     this.endDate = endDate;
-   }
+  public void setStartDate(Date startDate) {
+    this.startDate = startDate;
+  }
 
-   public Float getBudget() {
-     return budget;
-   }
+  public Date getEndDate() {
+    return endDate;
+  }
 
-   public void setBudget(Float budget) {
-     this.budget = budget;
-   }
+  public void setEndDate(Date endDate) {
+    this.endDate = endDate;
+  }
 
-   public Timestamp getCreatedAt() {
-     return createdAt;
-   }
+  public Float getBudget() {
+    return budget;
+  }
 
-   public void setCreatedAt(Timestamp createdAt) {
-     this.createdAt = createdAt;
-   }
-   //#endregion
+  public void setBudget(Float budget) {
+    this.budget = budget;
+  }
+
+  public Timestamp getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(Timestamp createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  // #endregion
 }
