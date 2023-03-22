@@ -114,24 +114,27 @@ public class ItineraryController {
             return ResponseEntity.notFound().build();
         }
         for (Itinerary itinerary : userItineraryList) {
-            if(itinerary.getDestination() == null) {
+            List<ItineraryItem> itineraryItemList = itineraryItemRepo.findAllByItineraryId (itinerary.getId());
+            if (itineraryItemList.size() == 0) {
                 return ResponseEntity.notFound().build();
             }
-            itinerary.setDestination(null);
-            itineraryRepo.save(itinerary);
+            for (ItineraryItem itineraryItem : itineraryItemList) {
+                itineraryItem.setDestination(null);
+                itineraryItemRepo.save(itineraryItem);
+            }
         }
         return ResponseEntity.ok().build();
     }
 
     @PutMapping(value = "/{itineraryId}/destination")
     public ResponseEntity deleteDestination(@PathVariable int itineraryId) {
-        Optional<Itinerary> itineraryOptional = itineraryRepo.findById(itineraryId);
-        if(!itineraryOptional.isPresent()) {
+        Optional<ItineraryItem> itineraryItemOptional = itineraryItemRepo.findByitineraryId(itineraryId);
+        if(!itineraryItemOptional.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        Itinerary itineraryToUpdate = itineraryOptional.get();
-        itineraryToUpdate.setDestination(null);
-        itineraryRepo.save(itineraryToUpdate);
+        ItineraryItem itineraryItemToUpdate = itineraryItemOptional.get();
+        itineraryItemToUpdate.setDestination(null);
+        itineraryItemRepo.save(itineraryItemToUpdate);
         return ResponseEntity.ok().build();
     }
 
