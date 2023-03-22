@@ -19,8 +19,12 @@ VALUES
   ('Rome', 'Italy', 'The Eternal City'),
   ('Barcelona', 'Spain', 'The City of Gaudi');
 
-INSERT INTO itineraries (user_id, transport_id, accommodation_id, destination_id, start_date, end_date, budget)
-VALUES 
-  (1, 1, 1, 1, '2023-05-01', '2023-05-05', 1000.00),
-  (2, 2, 2, 2, '2023-06-10', '2023-06-15', 1500.00),
-  (3, 3, 3, 3, '2023-07-20', '2023-07-25', 800.00);
+INSERT INTO itineraries (user_id, start_date, end_date, budget) VALUES
+(1, '2023-05-01', '2023-05-10', 2000.00),
+(2, '2023-07-15', '2023-07-22', 1500.00),
+(3, '2024-02-01', '2024-02-08', 3000.00);
+
+INSERT INTO itinerary_items (itinerary_id, transport_id, accommodation_id, destination_id, start_date, end_date) VALUES
+(1, 2, 2, 2, '2023-05-05', '2023-05-10'),
+(2, 3, 3, 3, '2023-07-15', '2023-07-22'),
+(3, 1, 2, 1, '2024-02-01', '2024-02-05');

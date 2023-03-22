@@ -38,16 +38,29 @@ create table accommodation (
 create table itineraries (
     id int AUTO_INCREMENT NOT NULL,
     user_id int NOT NULL,
-    transport_id int,
-    accommodation_id int,
-    destination_id INT,
     start_date Date NOT NULL,
     end_date Date NOT NULL,
     budget Decimal(8,2),
     created_at timestamp default current_timestamp,
     primary key (id),
-    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+create table itinerary_items (
+    id int AUTO_INCREMENT NOT NULL,
+    itinerary_id int NOT NULL,
+    transport_id int,
+    accommodation_id int,
+    destination_id INT,
+    start_date Date,
+    end_date Date,
+    created_at timestamp default current_timestamp,
+    primary key (id),
+    FOREIGN KEY (itinerary_id) REFERENCES itineraries(id),
     FOREIGN KEY (destination_id) REFERENCES destinations(id),
     FOREIGN KEY (transport_id) REFERENCES transport(id),
     FOREIGN KEY (accommodation_id) REFERENCES accommodation(id)
 );
+
+
+
