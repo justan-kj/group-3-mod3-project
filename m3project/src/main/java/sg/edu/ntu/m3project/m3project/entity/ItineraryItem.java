@@ -12,25 +12,34 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="itineraries")
-public class Itinerary {
+@Table(name="itinerary_items")
+public class ItineraryItem {
 
    @Id
    @GeneratedValue(strategy=GenerationType.IDENTITY)
    private Integer id;
 
    @ManyToOne
-   @JoinColumn(name="user_id")
-   private User user;
+   @JoinColumn(name="itinerary_id")
+   private Itinerary itinerary;
+
+  @ManyToOne
+   @JoinColumn(name="transport_id")
+   private Transport transport;
+
+   @ManyToOne
+   @JoinColumn(name="accommodation_id")
+   private Accommodation accommodation;
+
+   @ManyToOne
+   @JoinColumn(name="destination_id")
+   private Destination destination;
 
    @Column(name="start_date")
    private Date startDate;
 
    @Column(name="end_date")
    private Date endDate;
-
-   @Column(name="budget")
-   private Float budget;
 
    @Column(name="created_at", updatable= false)
    private Timestamp createdAt = new Timestamp(new Date().getTime());
@@ -45,14 +54,39 @@ public class Itinerary {
      this.id = id;
    }
 
-   public User getUser() {
-     return user;
+   
+   public Itinerary getItinerary() {
+    return itinerary;
+  }
+
+  public void setItinerary(Itinerary itinerary) {
+    this.itinerary = itinerary;
+  }
+
+   public Transport getTransport() {
+     return transport;
    }
 
-   public void setUser(User user) {
-     this.user = user;
+   public void setTransport(Transport transportId) {
+     this.transport = transportId;
    }
-   
+
+   public Accommodation getAccommodation() {
+     return accommodation;
+   }
+
+   public void setAccommodation(Accommodation accommodationId) {
+     this.accommodation = accommodationId;
+   }
+
+   public Destination getDestination() {
+     return destination;
+   }
+
+   public void setDestination(Destination destinationId) {
+     this.destination = destinationId;
+   }
+
    public Date getStartDate() {
      return startDate;
    }
@@ -67,14 +101,6 @@ public class Itinerary {
 
    public void setEndDate(Date endDate) {
      this.endDate = endDate;
-   }
-
-   public Float getBudget() {
-     return budget;
-   }
-
-   public void setBudget(Float budget) {
-     this.budget = budget;
    }
 
    public Timestamp getCreatedAt() {
