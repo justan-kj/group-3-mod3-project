@@ -58,6 +58,7 @@ create table itinerary_items (
     destination_id INT,
     start_date Date,
     end_date Date,
+    notes TEXT,
     created_at timestamp default current_timestamp,
     primary key (id),
     FOREIGN KEY (itinerary_id) REFERENCES itineraries(id),
