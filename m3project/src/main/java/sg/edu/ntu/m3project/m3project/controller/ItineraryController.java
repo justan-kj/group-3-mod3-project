@@ -109,6 +109,37 @@ public class ItineraryController {
         return ResponseEntity.created(location).build();
     }
 
+    @PutMapping(value = "/{userId}/destinations")
+    public ResponseEntity deleteAllDestinations(@PathVariable int userId) {
+        List<Itinerary> userItineraryList = (List<Itinerary>) itineraryRepo.findAllByUserId(userId);
+        if (userItineraryList.size() == 0) {
+            return ResponseEntity.notFound().build();
+        }
+        for (Itinerary itinerary : userItineraryList) {
+            List<ItineraryItem> itineraryItemList = itineraryItemRepo.findAllByItineraryId (itinerary.getId());
+            if (itineraryItemList.size() == 0) {
+                return ResponseEntity.notFound().build();
+            }
+            for (ItineraryItem itineraryItem : itineraryItemList) {
+                itineraryItem.setDestination(null);
+                itineraryItemRepo.save(itineraryItem);
+            }
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping(value = "/{itineraryId}/destination")
+    public ResponseEntity deleteDestination(@PathVariable int itineraryId) {
+        Optional<ItineraryItem> itineraryItemOptional = itineraryItemRepo.findByitineraryId(itineraryId);
+        if(!itineraryItemOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        ItineraryItem itineraryItemToUpdate = itineraryItemOptional.get();
+        itineraryItemToUpdate.setDestination(null);
+        itineraryItemRepo.save(itineraryItemToUpdate);
+        return ResponseEntity.ok().build();
+    }
+
     @PutMapping(value = "/items/{itineraryItemId}/accommodation")
     public ResponseEntity addAccommodation() {
         return ResponseEntity.ok().build();
