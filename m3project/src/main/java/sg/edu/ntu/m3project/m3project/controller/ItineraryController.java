@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import sg.edu.ntu.m3project.m3project.entity.Destination;
@@ -26,6 +27,7 @@ import sg.edu.ntu.m3project.m3project.repo.UserRepository;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 
 import java.net.URI;
 import java.sql.Date;
@@ -170,14 +172,35 @@ public class ItineraryController {
          return ResponseEntity.notFound().build();
     }
 
-    @PutMapping(value = "/{userId}/budget")
-    public ResponseEntity setBudget(@RequestParam float budget) {
-        return ResponseEntity.ok().build();
+    // Endpoint eg: http://localhost:8080/itineraries/1/1/budget?budget=999
+    @PutMapping(value = "/{userId}/{itineraryId}/budget")
+    public ResponseEntity setBudget(@PathVariable int userId, @PathVariable int itineraryId, @RequestParam float budget) {
+
+        if (ObjectUtils.isEmpty(budget) || budget < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Budget cannot be negative");
+        } else if(budget > 99999999) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Budget limit exceeded");
+        }
+
+        Optional<Itinerary> itineraryOptional = itineraryRepo.findById(itineraryId);
+        Optional<User> userOptional = userRepo.findById(userId);
+        if(!itineraryOptional.isPresent() || !userOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        Itinerary itineraryBudgetToSet = itineraryOptional.get();
+        try {
+            itineraryBudgetToSet.setBudget(budget);
+            itineraryRepo.save(itineraryBudgetToSet);
+            return ResponseEntity.ok().build();
+        } catch(Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @PutMapping(value = "/{userId}/{itineraryId}/duration")
     public ResponseEntity setDuration(@RequestParam Date startDate, @RequestParam Date endDate) {
-
         return ResponseEntity.ok().build();
     }
 
