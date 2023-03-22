@@ -1,6 +1,7 @@
 package sg.edu.ntu.m3project.m3project.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -245,9 +246,19 @@ public class ItineraryController {
         }
     }
 
-    @PutMapping(value = "/{userId}/{itineraryId}/duration")
-    public ResponseEntity setDuration(@RequestParam Date startDate, @RequestParam Date endDate) {
-        return ResponseEntity.ok().build();
+    @PutMapping("/{itineraryId}/dates")
+    public ResponseEntity<Itinerary> setItineraryDates(@PathVariable int itineraryId,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
+        Optional<Itinerary> foundItinerary = itineraryRepo.findById(itineraryId);
+        if (!foundItinerary.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        Itinerary itineraryToUpdate = foundItinerary.get();
+        itineraryToUpdate.setStartDate(startDate);
+        itineraryToUpdate.setEndDate(endDate);
+        itineraryRepo.save(itineraryToUpdate);
+        return ResponseEntity.ok().body(itineraryToUpdate);
     }
 
 }
