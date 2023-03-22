@@ -68,6 +68,19 @@ public class ItineraryController {
         }
     }
 
+    @PostMapping
+    public ResponseEntity<Itinerary> createItinerary(@RequestBody Itinerary itinerary) {
+        try {
+            Itinerary createdItinerary = itineraryRepo.save(itinerary);
+            URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                    .buildAndExpand(createdItinerary.getId()).toUri();
+            return ResponseEntity.created(location).body(createdItinerary);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @PostMapping(value = "/{itineraryId}")
     public ResponseEntity addItineraryItem(@PathVariable int itineraryId, @RequestBody ItineraryItem itineraryItem) {
 
@@ -116,7 +129,7 @@ public class ItineraryController {
             return ResponseEntity.notFound().build();
         }
         for (Itinerary itinerary : userItineraryList) {
-            List<ItineraryItem> itineraryItemList = itineraryItemRepo.findAllByItineraryId (itinerary.getId());
+            List<ItineraryItem> itineraryItemList = itineraryItemRepo.findAllByItineraryId(itinerary.getId());
             if (itineraryItemList.size() == 0) {
                 return ResponseEntity.notFound().build();
             }
@@ -131,7 +144,7 @@ public class ItineraryController {
     @PutMapping(value = "/{itineraryId}/destination")
     public ResponseEntity deleteDestination(@PathVariable int itineraryId) {
         Optional<ItineraryItem> itineraryItemOptional = itineraryItemRepo.findByitineraryId(itineraryId);
-        if(!itineraryItemOptional.isPresent()) {
+        if (!itineraryItemOptional.isPresent()) {
             return ResponseEntity.notFound().build();
         }
         ItineraryItem itineraryItemToUpdate = itineraryItemOptional.get();
@@ -188,43 +201,45 @@ public class ItineraryController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping(value="/{userId}/{itineraryId}/{transportId}")
-    public ResponseEntity deleteTransport(@PathVariable int userId, @PathVariable int itineraryId, @PathVariable int transportId){
+    @DeleteMapping(value = "/{userId}/{itineraryId}/{transportId}")
+    public ResponseEntity deleteTransport(@PathVariable int userId, @PathVariable int itineraryId,
+            @PathVariable int transportId) {
         boolean exist = transportRepo.existsById(transportId);
-         if(exist){
-            try{
+        if (exist) {
+            try {
                 transportRepo.deleteById(transportId);
                 return ResponseEntity.ok().build();
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 return ResponseEntity.badRequest().build();
             }
-         }
-         return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 
     // Endpoint eg: http://localhost:8080/itineraries/1/1/budget?budget=999
     @PutMapping(value = "/{userId}/{itineraryId}/budget")
-    public ResponseEntity setBudget(@PathVariable int userId, @PathVariable int itineraryId, @RequestParam float budget) {
+    public ResponseEntity setBudget(@PathVariable int userId, @PathVariable int itineraryId,
+            @RequestParam float budget) {
 
         if (ObjectUtils.isEmpty(budget) || budget < 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Budget cannot be negative");
-        } else if(budget > 99999999) {
+        } else if (budget > 99999999) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Budget limit exceeded");
         }
 
         Optional<Itinerary> itineraryOptional = itineraryRepo.findById(itineraryId);
         Optional<User> userOptional = userRepo.findById(userId);
-        if(!itineraryOptional.isPresent() || !userOptional.isPresent()) {
+        if (!itineraryOptional.isPresent() || !userOptional.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        
+
         Itinerary itineraryBudgetToSet = itineraryOptional.get();
         try {
             itineraryBudgetToSet.setBudget(budget);
             itineraryRepo.save(itineraryBudgetToSet);
             return ResponseEntity.ok().build();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
