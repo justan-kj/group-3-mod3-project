@@ -261,4 +261,19 @@ public class ItineraryController {
         return ResponseEntity.ok().body(itineraryToUpdate);
     }
 
+    @PutMapping("/items/{itineraryItemId}/dates")
+    public ResponseEntity<ItineraryItem> setItineraryItemDates(@PathVariable int itineraryItemId,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
+        Optional<ItineraryItem> itineraryItemOptional = itineraryItemRepo.findById(itineraryItemId);
+        if (!itineraryItemOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        ItineraryItem itineraryItemToUpdate = itineraryItemOptional.get();
+        itineraryItemToUpdate.setStartDate(startDate);
+        itineraryItemToUpdate.setEndDate(endDate);
+        itineraryItemRepo.save(itineraryItemToUpdate);
+        return ResponseEntity.ok().body(itineraryItemToUpdate);
+    }
+
 }
