@@ -69,6 +69,16 @@ public class ItineraryController {
         }
     }
 
+    @GetMapping(value = "/{itineraryId}/items")
+    public ResponseEntity<List<ItineraryItem>> getItineraryItemsFromItinerary(@PathVariable int itineraryId) {
+        Optional<Itinerary> itinerary = itineraryRepo.findById(itineraryId);
+        if (!itinerary.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        List<ItineraryItem> itineraryItems = itineraryItemRepo.findAllByItinerary(itinerary.get());
+        return ResponseEntity.ok().body(itineraryItems);
+    }
+
     @PostMapping
     public ResponseEntity<Itinerary> createItinerary(@RequestBody Itinerary itinerary) {
         try {
