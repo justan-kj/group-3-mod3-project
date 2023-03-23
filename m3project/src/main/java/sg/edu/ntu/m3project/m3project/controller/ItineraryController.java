@@ -72,7 +72,7 @@ public class ItineraryController {
     }
 
     @GetMapping(value = "/{itineraryId}/items")
-    public ResponseEntity<List<ItineraryItem>> getItineraryItemsFromItinerary(@PathVariable int itineraryId) {
+    public ResponseEntity<List<ItineraryItem>> getItineraryItems(@PathVariable int itineraryId) {
         Optional<Itinerary> itinerary = itineraryRepo.findById(itineraryId);
         if (!itinerary.isPresent()) {
             return ResponseEntity.notFound().build();
@@ -228,6 +228,26 @@ public class ItineraryController {
             }
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping(value="/{itineraryId}")
+    public ResponseEntity deleteItinerary(@PathVariable int itineraryId) {
+        Optional<Itinerary> foundItinerary = itineraryRepo.findById(itineraryId);
+        if (!foundItinerary.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        itineraryRepo.deleteById(itineraryId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping(value="/items/{itineraryItemId}")
+    public ResponseEntity deleteItineraryItem(@PathVariable int itineraryItemId) {
+        Optional<ItineraryItem> foundItineraryItem = itineraryItemRepo.findById(itineraryItemId);
+        if (!foundItineraryItem.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        itineraryItemRepo.deleteById(itineraryItemId);
+        return ResponseEntity.ok().build();
     }
 
     // Endpoint eg: http://localhost:8080/itineraries/1/1/budget?budget=999
