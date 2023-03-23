@@ -123,27 +123,27 @@ public class ItineraryController {
     public ResponseEntity setDestination(@PathVariable int itineraryItemId, @RequestParam int destinationId) {
 
         ItineraryItem itineraryItem = itineraryItemRepo.findById(itineraryItemId).orElse(null);    
+        Destination destination = destinationRepo.findById(destinationId).orElse(null);
 
-        if (itineraryItem == null) {
+        if (itineraryItem == null || destination == null) {
             return ResponseEntity.badRequest().build();
         }
         // Validate destination country
         try {
-            validationService.validateCountry(itineraryItem.getDestination().getCountry());
+            validationService.validateCountry(destination.getCountry());
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
 
         // validate city service
         try {
-            validationService.validateCity(itineraryItem.getDestination().getCity());
+            validationService.validateCity(destination.getCity());
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
         
-        Optional<Destination> destination = destinationRepo.findById(itineraryItem.getDestination().getId());
 
-        itineraryItem.setDestination(destination.get());
+        itineraryItem.setDestination(destination);
         itineraryItemRepo.save(itineraryItem);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
