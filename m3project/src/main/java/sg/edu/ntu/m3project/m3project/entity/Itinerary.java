@@ -12,113 +12,99 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="itineraries")
+@Table(name = "itineraries")
 public class Itinerary {
 
-   @Id
-   @GeneratedValue(strategy=GenerationType.IDENTITY)
-   private Integer id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer id;
 
-   @ManyToOne
-   @JoinColumn(name="user_id")
-   private User user;
+  @Column(name = "name")
+  private String name;
 
-   @ManyToOne
-   @JoinColumn(name="transport_id")
-   private Transport transport;
+  @Column(name = "description")
+  private String description;
 
-   @ManyToOne
-   @JoinColumn(name="accommodation_id")
-   private Accommodation accommodation;
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private User user;
 
-   @ManyToOne
-   @JoinColumn(name="destination_id")
-   private Destination destination;
+  @Column(name = "start_date")
+  private Date startDate;
 
-   @Column(name="start_date")
-   private Date startDate;
+  @Column(name = "end_date")
+  private Date endDate;
 
-   @Column(name="end_date")
-   private Date endDate;
+  @Column(name = "budget")
+  private Float budget;
 
-   @Column(name="budget")
-   private Float budget;
+  @Column(name = "created_at", updatable = false)
+  private Timestamp createdAt = new Timestamp(new Date().getTime());
 
-   @Column(name="created_at", updatable= false)
-   private Timestamp createdAt = new Timestamp(new Date().getTime());
+  // #region Getters and Setters
+  public Integer getId() {
+    return id;
+  }
 
+  public void setId(Integer id) {
+    this.id = id;
+  }
 
-   //#region Getters and Setters
-   public Integer getId() {
-     return id;
-   }
+  public User getUser() {
+    return user;
+  }
 
-   public void setId(Integer id) {
-     this.id = id;
-   }
+  public void setUser(User user) {
+    this.user = user;
+  }
 
-   public User getUser() {
-     return user;
-   }
+  public Date getStartDate() {
+    return startDate;
+  }
 
-   public void setUser(User user) {
-     this.user = user;
-   }
+  public void setStartDate(Date startDate) {
+    this.startDate = startDate;
+  }
 
-   public Transport getTransport() {
-     return transport;
-   }
+  public Date getEndDate() {
+    return endDate;
+  }
 
-   public void setTransport(Transport transportId) {
-     this.transport = transportId;
-   }
+  public void setEndDate(Date endDate) {
+    this.endDate = endDate;
+  }
 
-   public Accommodation getAccommodation() {
-     return accommodation;
-   }
+  public Float getBudget() {
+    return budget;
+  }
 
-   public void setAccommodation(Accommodation accommodationId) {
-     this.accommodation = accommodationId;
-   }
+  public void setBudget(Float budget) {
+    this.budget = budget;
+  }
 
-   public Destination getDestination() {
-     return destination;
-   }
+  public Timestamp getCreatedAt() {
+    return createdAt;
+  }
 
-   public void setDestination(Destination destinationId) {
-     this.destination = destinationId;
-   }
+  public void setCreatedAt(Timestamp createdAt) {
+    this.createdAt = createdAt;
+  }
 
-   public Date getStartDate() {
-     return startDate;
-   }
+  public String getName() {
+    return name;
+  }
 
-   public void setStartDate(Date startDate) {
-     this.startDate = startDate;
-   }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-   public Date getEndDate() {
-     return endDate;
-   }
+  public String getDescription() {
+    return description;
+  }
 
-   public void setEndDate(Date endDate) {
-     this.endDate = endDate;
-   }
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-   public Float getBudget() {
-     return budget;
-   }
-
-   public void setBudget(Float budget) {
-     this.budget = budget;
-   }
-
-   public Timestamp getCreatedAt() {
-     return createdAt;
-   }
-
-   public void setCreatedAt(Timestamp createdAt) {
-     this.createdAt = createdAt;
-   }
-   //#endregion
+  // #endregion
 }
