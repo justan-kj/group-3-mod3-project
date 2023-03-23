@@ -232,10 +232,21 @@ public class ItineraryController {
 
     @DeleteMapping(value="/{itineraryId}")
     public ResponseEntity deleteItinerary(@PathVariable int itineraryId) {
+        Optional<Itinerary> foundItinerary = itineraryRepo.findById(itineraryId);
+        if (!foundItinerary.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        itineraryRepo.deleteById(itineraryId);
         return ResponseEntity.ok().build();
     }
+
     @DeleteMapping(value="/items/{itineraryItemId}")
     public ResponseEntity deleteItineraryItem(@PathVariable int itineraryItemId) {
+        Optional<ItineraryItem> foundItineraryItem = itineraryItemRepo.findById(itineraryItemId);
+        if (!foundItineraryItem.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        itineraryItemRepo.deleteById(itineraryItemId);
         return ResponseEntity.ok().build();
     }
 
