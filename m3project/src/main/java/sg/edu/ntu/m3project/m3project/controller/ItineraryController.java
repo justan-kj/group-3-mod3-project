@@ -19,6 +19,7 @@ import sg.edu.ntu.m3project.m3project.entity.User;
 import sg.edu.ntu.m3project.m3project.repo.DestinationRepository;
 import sg.edu.ntu.m3project.m3project.repo.ItineraryRepository;
 import sg.edu.ntu.m3project.m3project.repo.UserRepository;
+import sg.edu.ntu.m3project.m3project.service.ValidationService;
 
 import org.springframework.http.ResponseEntity;
 
@@ -39,6 +40,9 @@ public class ItineraryController {
     @Autowired
     UserRepository userRepo;
 
+    @Autowired
+    ValidationService validationService;
+
     @GetMapping
     public ResponseEntity<List<Itinerary>> getAllItineraries() {
         List<Itinerary> itineraryRecords = (List<Itinerary>) itineraryRepo.findAll();
@@ -58,6 +62,20 @@ public class ItineraryController {
     @PostMapping(value = "/{userId}")
     public ResponseEntity addDestination(@PathVariable int userId, @RequestBody Itinerary itinerary ) {
 
+        // Validate destination country
+        try {
+            validationService.validateCountry(itinerary.getDestination().getCountry());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        // validate city service
+        try {
+            validationService.validateCity(itinerary.getDestination().getCity());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        
         Optional<User> user = userRepo.findById(userId);
         Optional<Destination> destination = destinationRepo.findById(itinerary.getDestination().getId());
 
