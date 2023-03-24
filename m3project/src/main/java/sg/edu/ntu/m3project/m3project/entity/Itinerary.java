@@ -1,15 +1,11 @@
 package sg.edu.ntu.m3project.m3project.entity;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import java.util.List;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "itineraries")
@@ -37,6 +33,11 @@ public class Itinerary {
 
   @Column(name = "budget")
   private Float budget;
+  
+  @OneToMany(mappedBy = "itinerary", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<ItineraryItem> itineraryItems = new ArrayList<>();
+
+
 
   @Column(name = "created_at", updatable = false)
   private Timestamp createdAt = new Timestamp(new Date().getTime());
@@ -105,6 +106,12 @@ public class Itinerary {
   public void setDescription(String description) {
     this.description = description;
   }
+  public List<ItineraryItem> getItineraryItems() {
+    return itineraryItems;
+  }
 
+  public void setItineraryItems(List<ItineraryItem> itineraryItems) {
+    this.itineraryItems = itineraryItems;
+  }
   // #endregion
 }
