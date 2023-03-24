@@ -220,6 +220,11 @@ public class ItineraryController {
         if (!foundItinerary.isPresent()) {
             return ResponseEntity.notFound().build();
         }
+        List<ItineraryItem> itineraryItems = itineraryItemRepo.findAllByItinerary(foundItinerary.get());   
+        for (ItineraryItem itineraryItem : itineraryItems) {
+            itineraryItemRepo.delete(itineraryItem);
+        }
+
         itineraryRepo.deleteById(itineraryId);
         return ResponseEntity.ok().build();
     }
