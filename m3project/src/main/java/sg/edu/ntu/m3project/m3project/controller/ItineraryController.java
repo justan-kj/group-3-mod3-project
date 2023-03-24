@@ -204,16 +204,6 @@ public class ItineraryController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping(value = "/items/{itineraryItemId}/accommodation")
-    public ResponseEntity addAccommodation() {
-        return ResponseEntity.ok().build();
-    }
-
-    @DeleteMapping(value = "/{userId}/{itineraryId}/accommodation")
-    public ResponseEntity deleteAccommodation() {
-        return ResponseEntity.ok().build();
-    }
-
     @DeleteMapping(value="/{itineraryId}")
     public ResponseEntity deleteItinerary(@PathVariable int itineraryId) {
         Optional<Itinerary> foundItinerary = itineraryRepo.findById(itineraryId);

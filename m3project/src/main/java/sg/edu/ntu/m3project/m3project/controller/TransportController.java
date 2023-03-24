@@ -50,6 +50,7 @@ public class TransportController {
                 Transport t = currentTransport.get(); // Get the object - Transport
 
                 // Update the fetched product with description, price sent via Request Body
+                t.setName(transport.getName());
                 t.setDescription(transport.getDescription());
                 t.setPrice(transport.getPrice());
 
