@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import sg.edu.ntu.m3project.m3project.entity.Accommodation;
 import sg.edu.ntu.m3project.m3project.entity.Destination;
 import sg.edu.ntu.m3project.m3project.entity.Itinerary;
 import sg.edu.ntu.m3project.m3project.entity.ItineraryItem;
 import sg.edu.ntu.m3project.m3project.entity.Transport;
 
 import sg.edu.ntu.m3project.m3project.entity.User;
+import sg.edu.ntu.m3project.m3project.repo.AccommodationRepository;
 import sg.edu.ntu.m3project.m3project.repo.DestinationRepository;
 import sg.edu.ntu.m3project.m3project.repo.ItineraryItemRepository;
 import sg.edu.ntu.m3project.m3project.repo.ItineraryRepository;
@@ -52,6 +54,12 @@ public class ItineraryController {
     DestinationRepository destinationRepo;
 
     @Autowired
+    TransportRepository transportRepo;
+
+    @Autowired
+    AccommodationRepository accommodationRepo;
+
+    @Autowired
     UserRepository userRepo;
 
     @Autowired
@@ -78,11 +86,11 @@ public class ItineraryController {
 
     @GetMapping(value = "/{itineraryId}/items")
     public ResponseEntity<List<ItineraryItem>> getItineraryItems(@PathVariable int itineraryId) {
-        Optional<Itinerary> itinerary = itineraryRepo.findById(itineraryId);
-        if (!itinerary.isPresent()) {
-            return ResponseEntity.notFound().build();
+        Itinerary itinerary = itineraryRepo.findById(itineraryId).orElse(null);
+        if (itinerary == null) {
+            return ResponseEntity.badRequest().build();
         }
-        List<ItineraryItem> itineraryItems = itineraryItemRepo.findAllByItinerary(itinerary.get());
+        List<ItineraryItem> itineraryItems = itineraryItemRepo.findAllByItinerary(itinerary);
         return ResponseEntity.ok().body(itineraryItems);
     }
 
@@ -99,17 +107,41 @@ public class ItineraryController {
 
     @PostMapping(value = "/{itineraryId}")
     public ResponseEntity addItineraryItem(@PathVariable int itineraryId, @RequestBody ItineraryItem itineraryItem) {
-        Optional<Itinerary> itinerary = itineraryRepo.findById(itineraryId);
-        if (!itinerary.isPresent()) {
+        Itinerary itinerary = itineraryRepo.findById(itineraryId).orElse(null);
+        if (itinerary == null) {
             return ResponseEntity.badRequest().build();
         }
 
-        itineraryItem.setItinerary(itinerary.get());
+        itineraryItem.setItinerary(itinerary);
         itineraryItemRepo.save(itineraryItem);
 
         return itineraryService.createdResponse(itineraryItem, itineraryItem.getId());
     }
 
+    @PutMapping("/{itineraryItemId}")
+    public ResponseEntity updateItineraryItem(@PathVariable int itineraryItemId, @RequestBody ItineraryItem updatedItem) {
+        ItineraryItem existingItem = itineraryItemRepo.findById(itineraryItemId).orElse(null);
+        if (existingItem != null) {
+            Destination newDestination = destinationRepo.findById(updatedItem.getDestination().getId()).orElse(null);
+            existingItem.setDestination(newDestination);
+
+            Transport newTransport = transportRepo.findById(updatedItem.getDestination().getId()).orElse(null);
+            existingItem.setTransport(newTransport);
+
+            Accommodation newAccommodation = accommodationRepo.findById(updatedItem.getDestination().getId()).orElse(null);
+            existingItem.setAccommodation(newAccommodation);
+            existingItem.setStartDate(updatedItem.getStartDate());
+            existingItem.setEndDate(updatedItem.getEndDate());
+
+            itineraryItemRepo.save(existingItem);
+            return ResponseEntity.ok().build();
+
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
+    
     @PutMapping(value = "/items/{itineraryItemId}/destination")
     public ResponseEntity setDestination(@PathVariable int itineraryItemId, @RequestParam int destinationId) {
 
