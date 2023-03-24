@@ -74,6 +74,15 @@ public class ItineraryController {
         return ResponseEntity.ok().body(itineraryRecords);
     }
 
+    @GetMapping(value = "/{itineraryId}")
+    public ResponseEntity<Itinerary> getItinerary(@PathVariable int itineraryId) {
+        Itinerary itinerary = itineraryRepo.findById(itineraryId).orElse(null);
+        if (itinerary == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().body(itinerary);
+    }
+
     @GetMapping(value="/items")
     public ResponseEntity<List<ItineraryItem>> getAllItineraryItems() {
         List<ItineraryItem> itineraryItemRecords = (List<ItineraryItem>) itineraryItemRepo.findAll();
