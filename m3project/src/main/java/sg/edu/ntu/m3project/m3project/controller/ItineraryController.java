@@ -94,6 +94,7 @@ public class ItineraryController {
         return ResponseEntity.ok().body(itineraryItems);
     }
 
+
     @PostMapping
     public ResponseEntity<Itinerary> createItinerary(@RequestBody Itinerary itinerary) {
         try {
@@ -145,12 +146,26 @@ public class ItineraryController {
     @PutMapping(value = "/items/{itineraryItemId}/destination")
     public ResponseEntity setDestination(@PathVariable int itineraryItemId, @RequestParam int destinationId) {
 
-        ItineraryItem itineraryItem = itineraryItemRepo.findById(itineraryItemId).orElse(null);
+        ItineraryItem itineraryItem = itineraryItemRepo.findById(itineraryItemId).orElse(null);    
         Destination destination = destinationRepo.findById(destinationId).orElse(null);
 
         if (itineraryItem == null || destination == null) {
             return ResponseEntity.badRequest().build();
         }
+        // Validate destination country
+        try {
+            validationService.validateCountry(destination.getCountry());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        // validate city service
+        try {
+            validationService.validateCity(destination.getCity());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        
 
         itineraryItem.setDestination(destination);
         itineraryItemRepo.save(itineraryItem);
