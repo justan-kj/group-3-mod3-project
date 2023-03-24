@@ -23,10 +23,17 @@ VALUES ('Hotel', 'Luxury accommodations', 200.00),
 INSERT INTO itineraries (name, description, user_id, start_date, end_date, budget)
 VALUES ('New York Trip', 'USA', 1, '2023-04-01', '2023-04-07', 1500.00),
 ('London Vacation', 'United Kingdom', 2, '2023-05-01', '2023-05-08', 2000.00),
-('Paris Getaway', 'France', 1, '2023-06-01', '2023-06-03', 1000.00);
+('Paris Getaway', 'France', 1, '2023-06-01', '2023-06-03', 1000.00),
+('Tokyo Adventure', 'Japan', 3, '2023-07-01', '2023-07-07', 3000.00);
 
 INSERT INTO itinerary_items (name, description, itinerary_id, transport_id, accommodation_id, destination_id, start_date, end_date)
-VALUES ('New York Day 1', 'Departure flight to New York', 1, 1, NULL, NULL, '2023-04-01', NULL),
-('New York Day 2', 'Luxury hotel in Manhattan', 1, NULL, 1, NULL, '2023-04-01', '2023-04-07'),
-('Paris Day 1', 'Departure train to Paris', 3, 2, NULL, NULL, '2023-06-01', NULL),
-('Paris Day 2', 'Cozy apartment in central Paris', 3, NULL, 3, NULL, '2023-06-01', '2023-06-03');
+VALUES ('New York Day 1', 'Departure flight to New York', 1, 1, 1, 1, '2023-04-01', '2023-04-01'),
+('New York Day 2', 'Luxury hotel in Manhattan', 1, 2, 2, 1, '2023-04-02', '2023-04-04'),
+('New York Day 3', 'Guided tour of the Statue of Liberty', 1, 3, 2, 1, '2023-04-05', '2023-04-06'),
+('London Day 1', 'Arrival flight to London', 2, 1, 1, 2, '2023-05-01', '2023-05-02'),
+('London Day 2', 'Hotel in central London', 2, 2, 3, 2, '2023-05-02', '2023-05-06'),
+('Paris Day 1', 'Departure train to Paris', 3, 2, 4, 3, '2023-06-01', '2023-06-01'),
+('Paris Day 2', 'Cozy apartment in central Paris', 3, 1, 5, 3, '2023-06-02', '2023-06-04'),
+('Tokyo Day 1', 'Arrival flight to Tokyo', 4, 1, 3, 4, '2023-07-01', '2023-07-02'),
+('Tokyo Day 2', 'Ryokan in the countryside', 4, 1, 6, 4, '2023-07-03', '2023-07-04'),
+('Tokyo Day 3', 'City hotel in Shinjuku', 4, 2, 7, 4, '2023-07-05', '2023-07-06');
