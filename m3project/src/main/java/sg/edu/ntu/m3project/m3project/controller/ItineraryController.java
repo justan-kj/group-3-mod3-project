@@ -74,6 +74,12 @@ public class ItineraryController {
         return ResponseEntity.ok().body(itineraryRecords);
     }
 
+    @GetMapping(value="/items")
+    public ResponseEntity<List<ItineraryItem>> getAllItineraryItems() {
+        List<ItineraryItem> itineraryItemRecords = (List<ItineraryItem>) itineraryItemRepo.findAll();
+        return ResponseEntity.ok().body(itineraryItemRecords);
+    }
+
     @GetMapping(value = "/users/{userId}")
     public ResponseEntity<List<Itinerary>> getUserItinerary(@PathVariable int userId) {
         List<Itinerary> userItinerary = (List<Itinerary>) itineraryRepo.findAllByUserId(userId);
@@ -220,12 +226,8 @@ public class ItineraryController {
         if (!foundItinerary.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        List<ItineraryItem> itineraryItems = itineraryItemRepo.findAllByItinerary(foundItinerary.get());   
-        for (ItineraryItem itineraryItem : itineraryItems) {
-            itineraryItemRepo.delete(itineraryItem);
-        }
 
-        itineraryRepo.deleteById(itineraryId);
+        itineraryRepo.delete(foundItinerary.get());
         return ResponseEntity.ok().build();
     }
 
