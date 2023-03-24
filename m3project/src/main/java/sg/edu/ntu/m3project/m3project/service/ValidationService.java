@@ -62,6 +62,14 @@ public class ValidationService {
         }
     }
 
+    public void validateBudget(float budget) {
+        if (!Float.toString(budget).matches("^\\d*\\.?\\d+$") || budget < 0) {
+            throw new IllegalArgumentException("Price cannot be empty or negative");
+        } else if (budget > 99999999) {
+            throw new IllegalArgumentException("Budget limit exceeded.");
+        }
+    }
+
     public void validateAccommodation(Accommodation accommodation) throws IllegalArgumentException {
         validateName(accommodation.getName());
         validatePrice(accommodation.getPrice());
