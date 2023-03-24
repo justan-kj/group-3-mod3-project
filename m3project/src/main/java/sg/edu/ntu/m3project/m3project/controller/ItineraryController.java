@@ -221,14 +221,13 @@ public class ItineraryController {
 
     // Endpoint eg: http://localhost:8080/itineraries/1/1/budget?budget=999
     @PutMapping(value = "/{itineraryId}/budget")
-    public ResponseEntity setBudget(@PathVariable int userId, @PathVariable int itineraryId,
+    public ResponseEntity setBudget( @PathVariable int itineraryId,
         @RequestParam float budget) {
 
         validationService.validateBudget(budget);
 
         Optional<Itinerary> itineraryOptional = itineraryRepo.findById(itineraryId);
-        Optional<User> userOptional = userRepo.findById(userId);
-        if (!itineraryOptional.isPresent() || !userOptional.isPresent()) {
+        if (!itineraryOptional.isPresent()) {
             return ResponseEntity.notFound().build();
         }
 
