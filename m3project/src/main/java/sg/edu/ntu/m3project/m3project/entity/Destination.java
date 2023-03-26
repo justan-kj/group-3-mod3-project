@@ -20,6 +20,17 @@ public class Destination {
     @Column(name = "image")
     String image;
 
+    @Column(name = "name")
+    String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Column(name = "city")
     String city;
 
