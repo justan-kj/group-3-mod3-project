@@ -10,13 +10,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
 @Entity
-@Table(name="destinations")
+@Table(name = "destinations")
 public class Destination {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+
+    @Column(name = "image")
+    String image;
 
     @Column(name = "city")
     String city;
@@ -30,7 +32,7 @@ public class Destination {
     @Column(name = "created_at", updatable = false)
     Timestamp createdAt = new Timestamp(new Date().getTime());
 
-    //#region Getters and Setters
+    // #region Getters and Setters
     public Integer getId() {
         return id;
     }
@@ -71,5 +73,12 @@ public class Destination {
         this.createdAt = createdAt;
     }
 
-    //endregion
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+    // endregion
 }

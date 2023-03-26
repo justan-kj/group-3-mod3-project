@@ -10,6 +10,7 @@ create table users (
 
 CREATE TABLE destinations (
   id INT AUTO_INCREMENT,
+  image VARCHAR(255),
   city VARCHAR(255) NOT NULL,
   country VARCHAR(255) NOT NULL,
   description TEXT,
@@ -21,6 +22,7 @@ create table transport (
     id int AUTO_INCREMENT NOT NULL,
     name VARCHAR(255),
     description TEXT,
+    image VARCHAR(255),
     price Decimal(8,2) NOT NULL,
     created_at timestamp default current_timestamp,
     primary key (id)
@@ -30,6 +32,7 @@ create table accommodation (
     id int AUTO_INCREMENT NOT NULL,
     name VARCHAR(255),
     description TEXT,
+    image VARCHAR(255),
     price Decimal(8,2) NOT NULL,
     created_at timestamp default current_timestamp,
     primary key (id)

@@ -24,6 +24,9 @@ public class Accommodation {
   @Column(name = "description")
   String description;
 
+  @Column(name = "image")
+  String image;
+
   @Column(name = "price")
   Float price;
 
@@ -70,4 +73,11 @@ public class Accommodation {
     this.createdAt = createdAt;
   }
 
+  public String getImage() {
+    return image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
+  }
 }
