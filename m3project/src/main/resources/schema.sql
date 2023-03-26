@@ -11,6 +11,7 @@ create table users (
 CREATE TABLE destinations (
   id INT AUTO_INCREMENT,
   image VARCHAR(255),
+  name varchar(255),
   city VARCHAR(255) NOT NULL,
   country VARCHAR(255) NOT NULL,
   description TEXT,

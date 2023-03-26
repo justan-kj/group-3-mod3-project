@@ -38,5 +38,5 @@ VALUES ('New York Day 1', 'Departure flight to New York', 1, 1, 2, 1, '2023-04-0
 ('London Day 3', 'Visit the British Museum and see Big Ben', 2, 3, 3, 3, '2023-05-06', '2023-05-08'),
 ('Tokyo Day 1', 'Departure flight to Tokyo', 4, 1, 2, 4, '2023-08-04', '2023-08-06'),
 ('Tokyo Day 2', 'Explore the city and visit Sensoji Temple', 4, 2, 3, 4, '2023-08-06', '2023-08-08'),
-('Tokyo Day 3', 'Visit Tokyo Disneyland', 4, 3, 3, 4, '2023-08-08', '2023-08-10'),
-('Tokyo Day 4', 'Relax and enjoy the hotel amenities', 4, 4, 1, 4, '2023-08-10', '2023-08-11');
+('Tokyo Day 3', 'Visit Tokyo Disneyland', 4, 3, 4, 4, '2023-08-08', '2023-08-10'),
+('Tokyo Day 4', 'Relax and enjoy the hotel amenities', 4, 4, 4, 4, '2023-08-10', '2023-08-11');
