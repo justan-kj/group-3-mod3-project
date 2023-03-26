@@ -39,14 +39,14 @@ VALUES ('New York Trip', 'USA', 1, '2023-04-03', '2023-04-07', 1500.00),
 ('Trouble in Tokyo','Japan',2,'2023-08-04','2023-08-08',2500.00);
 
 INSERT INTO itinerary_items (name, description, itinerary_id, transport_id, accommodation_id, destination_id, start_date, end_date)
-VALUES ('New York Day 1', 'Departure flight to New York', 1, 1, 2, 1, '2023-04-01', '2023-04-03'),
-('New York Day 2', 'Luxury hotel in Manhattan', 1, 2, 1, 1, '2023-04-03', '2023-04-07'),
-('Paris Day 1', 'Departure train to Paris', 3, 2, 3, 2, '2023-06-01', '2023-06-03'),
-('Paris Day 2', 'Cozy apartment in central Paris', 3, 2, 3, 2, '2023-06-03', '2023-06-06'),
-('London Day 1', 'Departure flight to London', 2, 1, 2, 3, '2023-05-01', '2023-05-03'),
-('London Day 2', 'Stay at a boutique hotel in Camden', 2, 4, 3, 3, '2023-05-03', '2023-05-06'),
-('London Day 3', 'Visit the British Museum and see Big Ben', 2, 3, 3, 3, '2023-05-06', '2023-05-08'),
-('Tokyo Day 1', 'Departure flight to Tokyo', 4, 1, 2, 4, '2023-08-04', '2023-08-06'),
-('Tokyo Day 2', 'Explore the city and visit Sensoji Temple', 4, 2, 3, 4, '2023-08-06', '2023-08-08'),
-('Tokyo Day 3', 'Visit Tokyo Disneyland', 4, 3, 4, 4, '2023-08-08', '2023-08-10'),
-('Tokyo Day 4', 'Relax and enjoy the hotel amenities', 4, 4, 4, 4, '2023-08-10', '2023-08-11');
+VALUES ('New York Day 1', 'Departure flight to New York', 1, 1, 2, 4, '2023-04-01', '2023-04-03'),
+('New York Day 2', 'Luxury hotel in Manhattan', 1, 2, 1, 11, '2023-04-03', '2023-04-07'),
+('Paris Day 1', 'Departure train to Paris', 3, 2, 3, 3, '2023-06-01', '2023-06-03'),
+('Paris Day 2', 'Cozy apartment in central Paris', 3, 2, 3, 10, '2023-06-03', '2023-06-06'),
+('London Day 1', 'Departure flight to London', 2, 1, 2, 1, '2023-05-01', '2023-05-03'),
+('London Day 2', 'Stay at a boutique hotel in Camden', 2, 4, 3, 5, '2023-05-03', '2023-05-06'),
+('London Day 3', 'Visit the British Museum and see Big Ben', 2, 3, 3, 8, '2023-05-06', '2023-05-08'),
+('Tokyo Day 1', 'Departure flight to Tokyo', 4, 1, 2, 2, '2023-08-04', '2023-08-06'),
+('Tokyo Day 2', 'Explore the city and visit Sensoji Temple', 4, 2, 3, 6, '2023-08-06', '2023-08-08'),
+('Tokyo Day 3', 'Visit Tokyo Disneyland', 4, 3, 4, 9, '2023-08-08', '2023-08-10'),
+('Tokyo Day 4', 'Relax and enjoy the hotel amenities', 4, 4, 4, 9, '2023-08-10', '2023-08-11');
