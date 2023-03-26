@@ -34,6 +34,9 @@ public class Transport {
     @Column(name = "created_at", updatable = false)
     Timestamp createdAt = new Timestamp(new Date().getTime());
 
+    @Column(name = "image")
+    String image;
+
     // Getters and Setters
     public Integer getId() {
         return id;
@@ -73,5 +76,13 @@ public class Transport {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
