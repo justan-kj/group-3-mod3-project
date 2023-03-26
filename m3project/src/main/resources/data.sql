@@ -4,23 +4,23 @@ VALUES ('john.doe@example.com', 'password', 30, 1),
 ('bob.smith@example.com', 'password', 35, 1),
 ('alice.jones@example.com', 'password', 25, 2);
 
-INSERT INTO destinations (city, country, description)
-VALUES ('New York', 'United States', 'The Big Apple'),
-('London', 'United Kingdom', 'The British capital'),
-('Paris', 'France', 'The City of Light'),
-('Tokyo', 'Japan', 'The Land of the Rising Sun');
+INSERT INTO destinations (city, country, description, image)
+VALUES ('New York', 'United States', 'The Big Apple','https://images.pexels.com/photos/466685/pexels-photo-466685.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('London', 'United Kingdom', 'The British capital','https://images.pexels.com/photos/258117/pexels-photo-258117.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('Paris', 'France', 'The City of Light','https://images.pexels.com/photos/2265845/pexels-photo-2265845.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('Tokyo', 'Japan', 'The Land of the Rising Sun','https://images.pexels.com/photos/2614818/pexels-photo-2614818.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
 
-INSERT INTO transport (name, description, price)
-VALUES ('Flight', 'This is air travel', 250.00),
-('Train', 'This is railway travel', 100.00),
-('Car', 'This is a personal vehicle', 50.00),
-('Bus', 'This is a bus', 5.00);
+INSERT INTO transport (name, description, price, image)
+VALUES ('Flight', 'This is air travel', 250.00,'https://images.pexels.com/photos/113017/pexels-photo-113017.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('Train', 'This is railway travel', 100.00,'https://images.pexels.com/photos/5699984/pexels-photo-5699984.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('Car', 'This is a personal vehicle', 50.00,'https://images.pexels.com/photos/2920064/pexels-photo-2920064.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('Bus', 'This is a bus', 5.00, 'https://images.pexels.com/photos/3829175/pexels-photo-3829175.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
 
-INSERT INTO accommodation (name, description, price)
-VALUES ('Hotel', 'Luxury accommodations', 200.00),
-('Hostel', 'Budget accommodations', 50.00),
-('Airbnb', 'Home-sharing accommodations', 100.00),
-('Streets', 'Free real estate',0.00);
+INSERT INTO accommodation (name, description, price, image)
+VALUES ('Hotel', 'Luxury accommodations', 200.00,'https://images.pexels.com/photos/1579253/pexels-photo-1579253.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('Hostel', 'Budget accommodations', 50.00,'https://images.pexels.com/photos/4907235/pexels-photo-4907235.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('Airbnb', 'Home-sharing accommodations', 100.00,'https://images.pexels.com/photos/1428348/pexels-photo-1428348.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('Streets', 'Free real estate',0.00,'https://images.pexels.com/photos/8078456/pexels-photo-8078456.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
 
 INSERT INTO itineraries (name, description, user_id, start_date, end_date, budget)
 VALUES ('New York Trip', 'USA', 1, '2023-04-01', '2023-04-07', 1500.00),
