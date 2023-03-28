@@ -34,7 +34,7 @@ public class Itinerary {
   @Column(name = "budget")
   private Float budget;
   
-  @OneToMany(mappedBy = "itinerary", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "itinerary", cascade = CascadeType.REMOVE, orphanRemoval = true)
   private List<ItineraryItem> itineraryItems = new ArrayList<>();
 
 
