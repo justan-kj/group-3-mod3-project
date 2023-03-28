@@ -12,6 +12,6 @@ import sg.edu.ntu.m3project.m3project.entity.ItineraryItem;
 @Repository
 public interface ItineraryItemRepository extends CrudRepository<ItineraryItem, Integer>{
   List<ItineraryItem> findAllByItineraryId(int itineraryId);
-  Optional<ItineraryItem> findByitineraryId(int itineraryId);
+  Optional<ItineraryItem> findByItineraryId(int itineraryId);
   List<ItineraryItem> findAllByItinerary (Itinerary itinerary);
 }
