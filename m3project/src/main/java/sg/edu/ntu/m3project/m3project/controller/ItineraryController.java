@@ -276,15 +276,41 @@ public class ItineraryController {
         return ResponseEntity.ok().build();
     }
 
-    // @DeleteMapping(value = "items/{itineraryItemId}")
-    // public ResponseEntity<ItineraryItem> deleteItineraryItem(@PathVariable int itineraryItemId) {
-    //     Optional<ItineraryItem> itineraryItemOptional = itineraryItemRepo.findById(itineraryItemId);
-    //     if (!itineraryItemOptional.isPresent()){
-    //         return ResponseEntity.notFound().build();
-    //     }
-    //     itineraryItemRepo.delete(itineraryItemOptional.get());
-    //     return ResponseEntity.ok().build();
-    // }
+    @DeleteMapping(value = "/items/{itineraryItemId}/destination")
+    public ResponseEntity deleteDestinationItem(@PathVariable int itineraryItemId) {
+        Optional<ItineraryItem> foundItineraryItem = itineraryItemRepo.findById(itineraryItemId);
+        if (!foundItineraryItem.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        foundItineraryItem.get().setDestination(null);
+        itineraryItemRepo.save(foundItineraryItem.get());
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping(value = "/items/{itineraryItemId}/accommodation")
+    public ResponseEntity deleteAccommodationItem(@PathVariable int itineraryItemId) {
+        Optional<ItineraryItem> foundItineraryItem = itineraryItemRepo.findById(itineraryItemId);
+        if (!foundItineraryItem.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+    
+        foundItineraryItem.get().setAccommodation(null);
+        itineraryItemRepo.save(foundItineraryItem.get());
+        return ResponseEntity.ok().build();
+    }
+    
+    @DeleteMapping(value = "/items/{itineraryItemId}/transport")
+    public ResponseEntity deleteTransportItem(@PathVariable int itineraryItemId) {
+        Optional<ItineraryItem> foundItineraryItem = itineraryItemRepo.findById(itineraryItemId);
+        if (!foundItineraryItem.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        foundItineraryItem.get().setTransport(null);
+        itineraryItemRepo.save(foundItineraryItem.get());
+        return ResponseEntity.ok().build();
+    }
     
     // Endpoint eg: http://localhost:8080/itineraries/1/1/budget?budget=999
     @PutMapping(value = "/{itineraryId}/budget")
