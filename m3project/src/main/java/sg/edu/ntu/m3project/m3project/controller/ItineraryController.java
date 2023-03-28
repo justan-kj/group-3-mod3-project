@@ -83,7 +83,7 @@ public class ItineraryController {
         return ResponseEntity.ok().body(itinerary);
     }
 
-    @GetMapping(value="/items")
+    @GetMapping(value = "/items")
     public ResponseEntity<List<ItineraryItem>> getAllItineraryItems() {
         List<ItineraryItem> itineraryItemRecords = (List<ItineraryItem>) itineraryItemRepo.findAll();
         return ResponseEntity.ok().body(itineraryItemRecords);
@@ -109,7 +109,6 @@ public class ItineraryController {
         return ResponseEntity.ok().body(itineraryItems);
     }
 
-
     @PostMapping
     public ResponseEntity<Itinerary> createItinerary(@RequestBody Itinerary itinerary) {
         try {
@@ -134,8 +133,9 @@ public class ItineraryController {
         return itineraryService.createdResponse(itineraryItem, itineraryItem.getId());
     }
 
-    @PutMapping("/{itineraryItemId}")
-    public ResponseEntity updateItineraryItem(@PathVariable int itineraryItemId, @RequestBody ItineraryItem updatedItem) {
+    @PutMapping("/items/{itineraryItemId}")
+    public ResponseEntity updateItineraryItem(@PathVariable int itineraryItemId,
+            @RequestBody ItineraryItem updatedItem) {
         ItineraryItem existingItem = itineraryItemRepo.findById(itineraryItemId).orElse(null);
         if (existingItem != null) {
             Destination newDestination = destinationRepo.findById(updatedItem.getDestination().getId()).orElse(null);
@@ -144,7 +144,8 @@ public class ItineraryController {
             Transport newTransport = transportRepo.findById(updatedItem.getDestination().getId()).orElse(null);
             existingItem.setTransport(newTransport);
 
-            Accommodation newAccommodation = accommodationRepo.findById(updatedItem.getDestination().getId()).orElse(null);
+            Accommodation newAccommodation = accommodationRepo.findById(updatedItem.getDestination().getId())
+                    .orElse(null);
             existingItem.setAccommodation(newAccommodation);
             existingItem.setStartDate(updatedItem.getStartDate());
             existingItem.setEndDate(updatedItem.getEndDate());
@@ -156,12 +157,26 @@ public class ItineraryController {
             return ResponseEntity.notFound().build();
         }
     }
-    
-    
+
+    @PutMapping(value = "/{itineraryId}")
+    public ResponseEntity updateItinerary(@PathVariable int itineraryId, @RequestBody Itinerary updatedItinerary) {
+        Itinerary existingItinerary = itineraryRepo.findById(itineraryId).orElse(null);
+        if (existingItinerary == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        existingItinerary.setName(updatedItinerary.getName());
+        existingItinerary.setDescription(updatedItinerary.getDescription());
+        existingItinerary.setStartDate(updatedItinerary.getStartDate());
+        existingItinerary.setEndDate(updatedItinerary.getEndDate());
+        existingItinerary.setBudget(updatedItinerary.getBudget());
+        itineraryRepo.save(existingItinerary);
+        return ResponseEntity.ok().build();
+    }
+
     @PutMapping(value = "/items/{itineraryItemId}/destination")
     public ResponseEntity setDestination(@PathVariable int itineraryItemId, @RequestParam int destinationId) {
 
-        ItineraryItem itineraryItem = itineraryItemRepo.findById(itineraryItemId).orElse(null);    
+        ItineraryItem itineraryItem = itineraryItemRepo.findById(itineraryItemId).orElse(null);
         Destination destination = destinationRepo.findById(destinationId).orElse(null);
 
         if (itineraryItem == null || destination == null) {
@@ -180,7 +195,6 @@ public class ItineraryController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        
 
         itineraryItem.setDestination(destination);
         itineraryItemRepo.save(itineraryItem);
@@ -229,7 +243,7 @@ public class ItineraryController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping(value="/{itineraryId}")
+    @DeleteMapping(value = "/{itineraryId}")
     public ResponseEntity deleteItinerary(@PathVariable int itineraryId) {
         Optional<Itinerary> foundItinerary = itineraryRepo.findById(itineraryId);
         if (!foundItinerary.isPresent()) {
@@ -240,7 +254,7 @@ public class ItineraryController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping(value="/items/{itineraryItemId}")
+    @DeleteMapping(value = "/items/{itineraryItemId}")
     public ResponseEntity deleteItineraryItem(@PathVariable int itineraryItemId) {
         Optional<ItineraryItem> foundItineraryItem = itineraryItemRepo.findById(itineraryItemId);
         if (!foundItineraryItem.isPresent()) {
@@ -252,8 +266,8 @@ public class ItineraryController {
 
     // Endpoint eg: http://localhost:8080/itineraries/1/1/budget?budget=999
     @PutMapping(value = "/{itineraryId}/budget")
-    public ResponseEntity setBudget( @PathVariable int itineraryId,
-        @RequestParam float budget) {
+    public ResponseEntity setBudget(@PathVariable int itineraryId,
+            @RequestParam float budget) {
 
         validationService.validateBudget(budget);
 
@@ -273,7 +287,7 @@ public class ItineraryController {
         }
     }
 
-    @PutMapping(value="/{itineraryId}/dates")
+    @PutMapping(value = "/{itineraryId}/dates")
     public ResponseEntity<Itinerary> setItineraryDates(@PathVariable int itineraryId,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
@@ -288,7 +302,7 @@ public class ItineraryController {
         return ResponseEntity.ok().body(itineraryToUpdate);
     }
 
-    @PutMapping(value="/items/{itineraryItemId}/dates")
+    @PutMapping(value = "/items/{itineraryItemId}/dates")
     public ResponseEntity<ItineraryItem> setItineraryItemDates(@PathVariable int itineraryItemId,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
@@ -303,7 +317,7 @@ public class ItineraryController {
         return ResponseEntity.ok().body(itineraryItemToUpdate);
     }
 
-    @GetMapping(value="/{itineraryId}/balance")
+    @GetMapping(value = "/{itineraryId}/balance")
     public ResponseEntity<Double> getBudgetBalance(@PathVariable int itineraryId) {
         double balance = itineraryService.getBudgetBalance(itineraryId);
         if (balance >= 0) {
