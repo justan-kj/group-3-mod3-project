@@ -1,5 +1,6 @@
 package sg.edu.ntu.m3project.m3project.controller;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -109,14 +110,10 @@ public class ItineraryController {
         return ResponseEntity.ok().body(itineraryItems);
     }
 
-    @GetMapping(value = "/{itineraryId}/items/{itineraryItemId}")
-    public ResponseEntity<ItineraryItem> getItineraryItem(@PathVariable int itineraryId, @PathVariable int itineraryItemId) {
-        Itinerary itinerary = itineraryRepo.findById(itineraryId).orElse(null);
-        if (itinerary == null) {
-            return ResponseEntity.badRequest().build();
-        }
+    @GetMapping(value = "items/{itineraryItemId}")
+    public ResponseEntity<ItineraryItem> getItineraryItem(@PathVariable int itineraryItemId) {
         Optional<ItineraryItem> itineraryItemOptional = itineraryItemRepo.findById(itineraryItemId);
-        if (itineraryItemOptional.isEmpty() || itineraryItemOptional.get().getItinerary().getId() != itineraryId) {
+        if (itineraryItemOptional.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
         ItineraryItem itineraryItem = itineraryItemOptional.get();
@@ -237,7 +234,7 @@ public class ItineraryController {
 
     @PutMapping(value = "/{itineraryId}/destination")
     public ResponseEntity deleteDestination(@PathVariable int itineraryId) {
-        Optional<ItineraryItem> itineraryItemOptional = itineraryItemRepo.findByitineraryId(itineraryId);
+        Optional<ItineraryItem> itineraryItemOptional = itineraryItemRepo.findByItineraryId(itineraryId);
         if (!itineraryItemOptional.isPresent()) {
             return ResponseEntity.notFound().build();
         }
@@ -268,28 +265,27 @@ public class ItineraryController {
         return ResponseEntity.ok().build();
     }
 
-    // @DeleteMapping("/{itineraryId}/items/{itineraryItemId}")
-    // public ResponseEntity<String> deleteItineraryItem(@PathVariable Integer itineraryId, @PathVariable Integer itineraryItemId) {
-    //     Optional<ItineraryItem> itineraryItem = itineraryItemRepo.findById(itineraryItemId);
-    //     if (itineraryItem.isPresent() && itineraryItem.get().getItinerary().getId().equals(itineraryId)) {
-    //         itineraryItemRepo.deleteById(itineraryItemId);
-    //         return ResponseEntity.ok("Itinerary item with id " + itineraryItemId + " has been deleted.");
+    @DeleteMapping(value = "/items/{itineraryItemId}")
+    public ResponseEntity deleteItineraryItem(@PathVariable int itineraryItemId) {
+        Optional<ItineraryItem> foundItineraryItem = itineraryItemRepo.findById(itineraryItemId);
+        if (!foundItineraryItem.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        itineraryItemRepo.delete(foundItineraryItem.get());
+        return ResponseEntity.ok().build();
+    }
+
+    // @DeleteMapping(value = "items/{itineraryItemId}")
+    // public ResponseEntity<ItineraryItem> deleteItineraryItem(@PathVariable int itineraryItemId) {
+    //     Optional<ItineraryItem> itineraryItemOptional = itineraryItemRepo.findById(itineraryItemId);
+    //     if (!itineraryItemOptional.isPresent()){
+    //         return ResponseEntity.notFound().build();
     //     }
-    //     return ResponseEntity.notFound().build();
+    //     itineraryItemRepo.delete(itineraryItemOptional.get());
+    //     return ResponseEntity.ok().build();
     // }
     
-    @DeleteMapping("/{itineraryId}/items/{itineraryItemId}")
-    public ResponseEntity<String> deleteItineraryItem(@PathVariable Integer itineraryId, @PathVariable Integer itineraryItemId) {
-        Optional<ItineraryItem> itineraryItem = itineraryItemRepo.findById(itineraryItemId);
-        if (itineraryItem.isPresent() && itineraryItem.get().getItinerary().getId().equals(itineraryId)) {
-            itineraryItemRepo.deleteById(itineraryItemId);
-            itineraryItem.get().getItinerary().getItineraryItems().remove(itineraryItem.get());
-            return ResponseEntity.ok("Itinerary item with id " + itineraryItemId + " has been deleted.");
-        }
-        return ResponseEntity.notFound().build();
-    }
-    
-
     // Endpoint eg: http://localhost:8080/itineraries/1/1/budget?budget=999
     @PutMapping(value = "/{itineraryId}/budget")
     public ResponseEntity setBudget(@PathVariable int itineraryId,
