@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -37,6 +38,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.net.URI;
 import java.sql.Date;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -325,5 +327,13 @@ public class ItineraryController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping(value = "/countries")
+    public List<Object> getCountries() {
+        String url = "https://restcountries.com/v3.1/all?fields=name";
+        RestTemplate restTemplate = new RestTemplate();
+        Object[] countries = restTemplate.getForObject(url, Object[].class);
+        return Arrays.asList(countries);
     }
 }
