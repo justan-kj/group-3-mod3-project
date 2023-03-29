@@ -333,7 +333,12 @@ public class ItineraryController {
     public List<Object> getCountries() {
         String url = "https://restcountries.com/v3.1/all?fields=name";
         RestTemplate restTemplate = new RestTemplate();
-        Object[] countries = restTemplate.getForObject(url, Object[].class);
-        return Arrays.asList(countries);
+        try{
+            Object[] countries = restTemplate.getForObject(url, Object[].class);
+            return Arrays.asList(countries);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
