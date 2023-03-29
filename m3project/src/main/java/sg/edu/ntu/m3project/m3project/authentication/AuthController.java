@@ -30,8 +30,6 @@ public class AuthController {
 
         System.out.println(jwtRequest);
         try {
-            System.out.println("Authenticating user: " + jwtRequest.getUsername());
-            System.out.println("Authenticating password: " + jwtRequest.getPassword());
 
             this.authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(), jwtRequest.getPassword()));
