@@ -93,15 +93,22 @@ public class ItineraryItemController {
             @RequestBody ItineraryItem updatedItem) {
         ItineraryItem existingItem = itineraryItemRepo.findById(itineraryItemId).orElse(null);
         if (existingItem != null) {
-            Destination newDestination = destinationRepo.findById(updatedItem.getDestination().getId()).orElse(null);
-            existingItem.setDestination(newDestination);
 
-            Transport newTransport = transportRepo.findById(updatedItem.getTransport().getId()).orElse(null);
-            existingItem.setTransport(newTransport);
+            if (updatedItem.getDestination() != null) {
+                Destination newDestination = destinationRepo.findById(updatedItem.getDestination().getId())
+                        .orElse(null);
+                existingItem.setDestination(newDestination);
+            }
+            if (updatedItem.getTransport() != null) {
+                Transport newTransport = transportRepo.findById(updatedItem.getTransport().getId()).orElse(null);
+                existingItem.setTransport(newTransport);
+            }
+            if (updatedItem.getAccommodation() != null) {
+                Accommodation newAccommodation = accommodationRepo.findById(updatedItem.getAccommodation().getId())
+                        .orElse(null);
+                existingItem.setAccommodation(newAccommodation);
+            }
 
-            Accommodation newAccommodation = accommodationRepo.findById(updatedItem.getAccommodation().getId())
-                    .orElse(null);
-            existingItem.setAccommodation(newAccommodation);
             existingItem.setStartDate(updatedItem.getStartDate());
             existingItem.setEndDate(updatedItem.getEndDate());
 
