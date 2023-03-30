@@ -15,6 +15,12 @@ public class ItineraryItem {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
+  @Column(name = "name")
+  private String name;
+
+  @Column(name = "description")
+  private String description;
+
   @ManyToOne(cascade = CascadeType.REMOVE)
   @JoinColumn(name="itinerary_id")
   @JsonIgnoreProperties("itineraryItems")
@@ -117,5 +123,20 @@ public class ItineraryItem {
     this.notes = notes;
   }
 
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
   // #endregion
 }

@@ -389,4 +389,22 @@ public class ItineraryController {
             return null;
         }
     }
+
+    @GetMapping(value="/destinations")
+    public ResponseEntity<List<Destination>> getAllDestinations() {
+        List<Destination> destinationList = (List<Destination>) destinationRepo.findAll();
+        return ResponseEntity.ok().body(destinationList);
+    }
+
+    @GetMapping(value="/accommodations")
+    public ResponseEntity<List<Accommodation>> getAllAccommodations() {
+        List<Accommodation> accommodationList = (List<Accommodation>) accommodationRepo.findAll();
+        return ResponseEntity.ok().body(accommodationList);
+    }
+
+    @GetMapping(value="/transports")
+    public ResponseEntity<List<Transport>> getAllTransports() {
+        List<Transport> transportList = (List<Transport>) transportRepo.findAll();
+        return ResponseEntity.ok().body(transportList);
+    }
 }
