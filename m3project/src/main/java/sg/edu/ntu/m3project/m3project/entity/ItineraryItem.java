@@ -15,7 +15,7 @@ public class ItineraryItem {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.REMOVE)
   @JoinColumn(name="itinerary_id")
   @JsonIgnoreProperties("itineraryItems")
   private Itinerary itinerary;

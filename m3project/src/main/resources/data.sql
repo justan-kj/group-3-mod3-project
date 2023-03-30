@@ -1,5 +1,7 @@
 INSERT INTO users (email, password, age, gender)
-VALUES ('john.doe@example.com', 'password', 30, 1),
+VALUES 
+('admin', 'admin', 50, 1),
+('john.doe@example.com', 'password', 30, 1),
 ('jane.doe@example.com', 'password', 28, 2),
 ('bob.smith@example.com', 'password', 35, 1),
 ('alice.jones@example.com', 'password', 25, 2);
