@@ -1,5 +1,6 @@
 package sg.edu.ntu.m3project.m3project.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,12 +28,22 @@ public class TransportController {
     @Autowired
     TransportRepository transportRepo;
 
+    @GetMapping()
+    public ResponseEntity<List<Transport>> getAllTransport() {
+        try {
+            List<Transport> destinations = (List<Transport>) transportRepo.findAll();
+            return ResponseEntity.ok().body(destinations);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @PostMapping
     public ResponseEntity<Transport> createTransport(@RequestBody Transport transport) {
 
         try {
-            Transport created = transportRepo.save(transport); // when "id" is not present, .save() will perform create
-                                                               // operation.
+            Transport created = transportRepo.save(transport);
             return new ResponseEntity(transportRepo.findById(created.getId()), HttpStatus.CREATED);
         } catch (IllegalArgumentException iae) {
             iae.printStackTrace();
@@ -43,17 +55,17 @@ public class TransportController {
     }
 
     @PutMapping(value = "/{transportId}")
-    public ResponseEntity<Transport> updateTransport(@RequestBody Transport transport, @PathVariable Integer transportId) {
+    public ResponseEntity<Transport> updateTransport(@RequestBody Transport transport,
+            @PathVariable Integer transportId) {
         Optional<Transport> currentTransport = transportRepo.findById(transportId);
-        if (currentTransport.isPresent()) { // Check if the expected object is present
+        if (currentTransport.isPresent()) {
             try {
-                Transport t = currentTransport.get(); // Get the object - Transport
+                Transport t = currentTransport.get();
 
-                // Update the fetched product with description, price sent via Request Body
                 t.setDescription(transport.getDescription());
                 t.setPrice(transport.getPrice());
 
-                transportRepo.save(t); // When "id" is present, .save() will perform update operation.
+                transportRepo.save(t);
                 return ResponseEntity.ok().body(t);
             } catch (Exception e) {
                 e.printStackTrace();
