@@ -1,7 +1,7 @@
 create table users (
     id int AUTO_INCREMENT NOT NULL,
     email varchar(255) NOT NULL,
-    password varchar(255) NOT NULL,
+    password char(50) NOT NULL,
     age int,
     gender int,
     created_at timestamp default current_timestamp,
