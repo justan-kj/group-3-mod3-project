@@ -149,17 +149,41 @@ public class ItineraryController {
     @PutMapping("/items/{itineraryItemId}")
     public ResponseEntity updateItineraryItem(@PathVariable int itineraryItemId,
             @RequestBody ItineraryItem updatedItem) {
+
         ItineraryItem existingItem = itineraryItemRepo.findById(itineraryItemId).orElse(null);
+
         if (existingItem != null) {
-            Destination newDestination = destinationRepo.findById(updatedItem.getDestination().getId()).orElse(null);
-            existingItem.setDestination(newDestination);
 
-            Transport newTransport = transportRepo.findById(updatedItem.getDestination().getId()).orElse(null);
-            existingItem.setTransport(newTransport);
+            // Destination newDestination = destinationRepo.findById(updatedItem.getDestination().getId()).orElse(null);
+            // existingItem.setDestination(newDestination);
 
-            Accommodation newAccommodation = accommodationRepo.findById(updatedItem.getDestination().getId())
-                    .orElse(null);
-            existingItem.setAccommodation(newAccommodation);
+            if (updatedItem.getDestination() != null) {
+                Optional<Destination> destinationOptional = destinationRepo.findById(updatedItem.getDestination().getId());
+                if (!destinationOptional.isPresent()) {
+                    return ResponseEntity.notFound().build();
+                }
+                Destination destinationToUpdate = destinationOptional.get();
+                existingItem.setDestination(destinationToUpdate);
+            }
+
+            if (updatedItem.getTransport() != null) {
+                Optional<Transport> transportOptional = transportRepo.findById(updatedItem.getTransport().getId());
+                if (!transportOptional.isPresent()) {
+                    return ResponseEntity.notFound().build();
+                }
+                Transport transportToUpdate = transportOptional.get();
+                existingItem.setTransport(transportToUpdate);
+            }
+
+            if (updatedItem.getAccommodation() != null) {
+                Optional<Accommodation> accommodationOptional = accommodationRepo.findById(updatedItem.getAccommodation().getId());
+                if (!accommodationOptional.isPresent()) {
+                    return ResponseEntity.notFound().build();
+                }
+                Accommodation accommodationToUpdate = accommodationOptional.get();
+                existingItem.setAccommodation(accommodationToUpdate);
+            }
+
             existingItem.setStartDate(updatedItem.getStartDate());
             existingItem.setEndDate(updatedItem.getEndDate());
 
