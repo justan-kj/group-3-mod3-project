@@ -86,12 +86,6 @@ public class ItineraryController {
         return ResponseEntity.ok().body(itinerary);
     }
 
-    @GetMapping(value = "/items")
-    public ResponseEntity<List<ItineraryItem>> getAllItineraryItems() {
-        List<ItineraryItem> itineraryItemRecords = (List<ItineraryItem>) itineraryItemRepo.findAll();
-        return ResponseEntity.ok().body(itineraryItemRecords);
-    }
-
     @GetMapping(value = "/users/{userId}")
     public ResponseEntity<List<Itinerary>> getUserItinerary(@PathVariable int userId) {
         List<Itinerary> userItinerary = (List<Itinerary>) itineraryRepo.findAllByUserId(userId);
@@ -110,16 +104,6 @@ public class ItineraryController {
         }
         List<ItineraryItem> itineraryItems = itineraryItemRepo.findAllByItinerary(itinerary);
         return ResponseEntity.ok().body(itineraryItems);
-    }
-
-    @GetMapping(value = "items/{itineraryItemId}")
-    public ResponseEntity<ItineraryItem> getItineraryItem(@PathVariable int itineraryItemId) {
-        Optional<ItineraryItem> itineraryItemOptional = itineraryItemRepo.findById(itineraryItemId);
-        if (itineraryItemOptional.isEmpty()) {
-            return ResponseEntity.badRequest().build();
-        }
-        ItineraryItem itineraryItem = itineraryItemOptional.get();
-        return ResponseEntity.ok().body(itineraryItem);
     }
 
     @PostMapping
@@ -146,31 +130,6 @@ public class ItineraryController {
         return itineraryService.createdResponse(itineraryItem, itineraryItem.getId());
     }
 
-    @PutMapping("/items/{itineraryItemId}")
-    public ResponseEntity updateItineraryItem(@PathVariable int itineraryItemId,
-            @RequestBody ItineraryItem updatedItem) {
-        ItineraryItem existingItem = itineraryItemRepo.findById(itineraryItemId).orElse(null);
-        if (existingItem != null) {
-            Destination newDestination = destinationRepo.findById(updatedItem.getDestination().getId()).orElse(null);
-            existingItem.setDestination(newDestination);
-
-            Transport newTransport = transportRepo.findById(updatedItem.getDestination().getId()).orElse(null);
-            existingItem.setTransport(newTransport);
-
-            Accommodation newAccommodation = accommodationRepo.findById(updatedItem.getDestination().getId())
-                    .orElse(null);
-            existingItem.setAccommodation(newAccommodation);
-            existingItem.setStartDate(updatedItem.getStartDate());
-            existingItem.setEndDate(updatedItem.getEndDate());
-
-            itineraryItemRepo.save(existingItem);
-            return ResponseEntity.ok().build();
-
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
     @PutMapping(value = "/{itineraryId}")
     public ResponseEntity updateItinerary(@PathVariable int itineraryId, @RequestBody Itinerary updatedItinerary) {
         Itinerary existingItinerary = itineraryRepo.findById(itineraryId).orElse(null);
@@ -186,35 +145,7 @@ public class ItineraryController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping(value = "/items/{itineraryItemId}/destination")
-    public ResponseEntity setDestination(@PathVariable int itineraryItemId, @RequestParam int destinationId) {
-
-        ItineraryItem itineraryItem = itineraryItemRepo.findById(itineraryItemId).orElse(null);
-        Destination destination = destinationRepo.findById(destinationId).orElse(null);
-
-        if (itineraryItem == null || destination == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        // Validate destination country
-        try {
-            validationService.validateCountry(destination.getCountry());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-
-        // validate city service
-        try {
-            validationService.validateCity(destination.getCity());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-
-        itineraryItem.setDestination(destination);
-        itineraryItemRepo.save(itineraryItem);
-
-        return ResponseEntity.ok().build();
-    }
-
+   
     @PutMapping(value = "/{userId}/destinations")
     public ResponseEntity deleteAllDestinations(@PathVariable int userId) {
         List<Itinerary> userItineraryList = (List<Itinerary>) itineraryRepo.findAllByUserId(userId);
@@ -234,28 +165,6 @@ public class ItineraryController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping(value = "/{itineraryId}/destination")
-    public ResponseEntity deleteDestination(@PathVariable int itineraryId) {
-        Optional<ItineraryItem> itineraryItemOptional = itineraryItemRepo.findByItineraryId(itineraryId);
-        if (!itineraryItemOptional.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        ItineraryItem itineraryItemToUpdate = itineraryItemOptional.get();
-        itineraryItemToUpdate.setDestination(null);
-        itineraryItemRepo.save(itineraryItemToUpdate);
-        return ResponseEntity.ok().build();
-    }
-
-    @PutMapping(value = "/items/{itineraryItemId}/accommodation")
-    public ResponseEntity addAccommodation() {
-        return ResponseEntity.ok().build();
-    }
-
-    @DeleteMapping(value = "/{userId}/{itineraryId}/accommodation")
-    public ResponseEntity deleteAccommodation() {
-        return ResponseEntity.ok().build();
-    }
-
     @DeleteMapping(value = "/{itineraryId}")
     public ResponseEntity deleteItinerary(@PathVariable int itineraryId) {
         Optional<Itinerary> foundItinerary = itineraryRepo.findById(itineraryId);
@@ -267,54 +176,6 @@ public class ItineraryController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping(value = "/items/{itineraryItemId}")
-    public ResponseEntity deleteItineraryItem(@PathVariable int itineraryItemId) {
-        Optional<ItineraryItem> foundItineraryItem = itineraryItemRepo.findById(itineraryItemId);
-        if (!foundItineraryItem.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        itineraryItemRepo.delete(foundItineraryItem.get());
-        return ResponseEntity.ok().build();
-    }
-
-    @DeleteMapping(value = "/items/{itineraryItemId}/destination")
-    public ResponseEntity deleteDestinationItem(@PathVariable int itineraryItemId) {
-        Optional<ItineraryItem> foundItineraryItem = itineraryItemRepo.findById(itineraryItemId);
-        if (!foundItineraryItem.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        foundItineraryItem.get().setDestination(null);
-        itineraryItemRepo.save(foundItineraryItem.get());
-        return ResponseEntity.ok().build();
-    }
-
-    @DeleteMapping(value = "/items/{itineraryItemId}/accommodation")
-    public ResponseEntity deleteAccommodationItem(@PathVariable int itineraryItemId) {
-        Optional<ItineraryItem> foundItineraryItem = itineraryItemRepo.findById(itineraryItemId);
-        if (!foundItineraryItem.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-    
-        foundItineraryItem.get().setAccommodation(null);
-        itineraryItemRepo.save(foundItineraryItem.get());
-        return ResponseEntity.ok().build();
-    }
-    
-    @DeleteMapping(value = "/items/{itineraryItemId}/transport")
-    public ResponseEntity deleteTransportItem(@PathVariable int itineraryItemId) {
-        Optional<ItineraryItem> foundItineraryItem = itineraryItemRepo.findById(itineraryItemId);
-        if (!foundItineraryItem.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        foundItineraryItem.get().setTransport(null);
-        itineraryItemRepo.save(foundItineraryItem.get());
-        return ResponseEntity.ok().build();
-    }
-    
-    // Endpoint eg: http://localhost:8080/itineraries/1/1/budget?budget=999
     @PutMapping(value = "/{itineraryId}/budget")
     public ResponseEntity setBudget(@PathVariable int itineraryId,
             @RequestParam float budget) {
@@ -352,21 +213,6 @@ public class ItineraryController {
         return ResponseEntity.ok().body(itineraryToUpdate);
     }
 
-    @PutMapping(value = "/items/{itineraryItemId}/dates")
-    public ResponseEntity<ItineraryItem> setItineraryItemDates(@PathVariable int itineraryItemId,
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
-        Optional<ItineraryItem> itineraryItemOptional = itineraryItemRepo.findById(itineraryItemId);
-        if (!itineraryItemOptional.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        ItineraryItem itineraryItemToUpdate = itineraryItemOptional.get();
-        itineraryItemToUpdate.setStartDate(startDate);
-        itineraryItemToUpdate.setEndDate(endDate);
-        itineraryItemRepo.save(itineraryItemToUpdate);
-        return ResponseEntity.ok().body(itineraryItemToUpdate);
-    }
-
     @GetMapping(value = "/{itineraryId}/balance")
     public ResponseEntity<Double> getBudgetBalance(@PathVariable int itineraryId) {
         double balance = itineraryService.getBudgetBalance(itineraryId);
@@ -389,4 +235,6 @@ public class ItineraryController {
             return null;
         }
     }
+
+
 }
